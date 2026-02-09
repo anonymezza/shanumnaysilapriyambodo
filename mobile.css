@@ -1,0 +1,249 @@
+/* 
+  RESPONSIVE MOBILE STYLES
+  Overrides shanum.css for devices < 768px
+*/
+
+@media (max-width: 900px) {
+
+    /* STACK THE GRID EARLIER FOR TABLETS */
+    .asym-grid,
+    .reverse-grid {
+        grid-template-columns: 1fr !important;
+        gap: 40px;
+        text-align: center;
+    }
+
+    .hero-visual-wrap {
+        height: 50vh;
+        margin-bottom: 20px;
+    }
+
+    /* Adjust padding for sections */
+    section {
+        padding: 8vh 5vw;
+        padding-right: 5vw;
+        /* Reset sidebar padding */
+    }
+
+    .nav-side {
+        display: none;
+        /* Hide side nav on mobile/tablet */
+    }
+
+    /* VINYL SECTION STACK */
+    .studio-box {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .vinyl-core {
+        width: 300px;
+        height: 300px;
+    }
+
+    .vinyl-needle {
+        left: 200px;
+        /* Adjust needle pos for smaller vinyl */
+        height: 140px;
+    }
+
+    /* TIMELINE */
+    .timeline-line {
+        left: 20px;
+        transform: none;
+    }
+
+    .timeline-item {
+        width: 100%;
+        margin-left: 40px !important;
+        /* Force all to right of line */
+        margin-right: 0;
+        margin-bottom: 60px;
+    }
+
+    .timeline-item.left {
+        align-self: flex-start;
+    }
+
+    .timeline-item::before {
+        /* Dot on the timeline */
+        content: '';
+        position: absolute;
+        left: -46px;
+        /* Align with line */
+        top: 20px;
+        width: 10px;
+        height: 10px;
+        background: var(--color-accent);
+        border-radius: 50%;
+        box-shadow: 0 0 10px var(--color-accent);
+    }
+}
+
+@media (max-width: 600px) {
+
+    /* HERO TITLE SCALING */
+    .hero-title-giant {
+        font-size: 15vw;
+        /* Make it responsive to width */
+        line-height: 1.1;
+        margin-bottom: 20px;
+    }
+
+    .hero-sub-text {
+        font-size: 1rem;
+        padding: 0 10px;
+        line-height: 1.5;
+    }
+
+    /* HIDE/ADJUST FLOATING TRAITS */
+    .f-word {
+        font-size: calc(1.5rem * var(--s));
+        /* Scale down trait words */
+        opacity: 0.1;
+        /* Fade them more so they don't distract */
+    }
+
+    /* PORTAL LOGO on Mobile */
+    .portal-logo {
+        width: 130px;
+        height: 130px;
+    }
+
+    .portal-circle {
+        width: 60px;
+        height: 60px;
+        font-size: 1rem;
+    }
+
+    .portal-svg-text {
+        font-size: 8.5px;
+        /* Slightly larger relative text for readability */
+    }
+
+    /* GALLERY ORBIT PREVIEW MOBILE */
+    .ring-engine-wrap {
+        width: 300px;
+        height: 300px;
+    }
+
+    .ring-card-item {
+        border-radius: 8px;
+    }
+
+    /* LIGHTBOX MOBILE */
+    .lb-content {
+        max-width: 95vw;
+        max-height: 70vh;
+    }
+
+    .lb-caption-box h3 {
+        font-size: 1.8rem;
+    }
+
+    .lb-caption-box p {
+        font-size: 0.7rem;
+    }
+
+    .lb-close {
+        top: -60px;
+        right: calc(50% - 25px);
+        /* Center close button on top */
+        width: 50px;
+        height: 50px;
+    }
+
+    /* COUNTDOWN */
+    .countdown-flex {
+        gap: 15px;
+    }
+
+    .count-unit {
+        font-size: 2.5rem;
+    }
+
+    .unit-label {
+        font-size: 0.6rem;
+    }
+
+    /* HORIZONTAL SCROLL SECTION FORCE VERTICAL ON MOBILE */
+    .horizontal-scroll-container,
+    .h-scroll-wrapper,
+    .h-scroll-panel {
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    .h-scroll-panel {
+        padding: 60px 20px;
+    }
+
+    .h-panel-inner {
+        height: 50vh;
+    }
+
+    .back-btn {
+        top: 20px;
+        left: 20px;
+        padding: 8px 18px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 380px) {
+
+    /* SMALLER PHONES (iPhone SE, Mini) */
+    .hero-title-giant {
+        font-size: 14vw;
+    }
+
+    .vinyl-core {
+        width: 250px;
+        height: 250px;
+    }
+
+    .vinyl-needle {
+        left: 170px;
+        height: 120px;
+    }
+
+    section {
+        padding: 10vh 20px;
+    }
+}
+
+/* --- GALLERY DOME MOBILE (gallery.html) --- */
+@media (max-width: 768px) {
+    .dome-card {
+        width: 220px !important;
+        height: 300px !important;
+    }
+
+    .back-nav {
+        top: 15px;
+        left: 15px;
+        padding: 8px 16px;
+        font-size: 0.75rem;
+    }
+
+    .hint {
+        bottom: 80px;
+        /* Move up to avoid bottom bars */
+        width: 90%;
+        text-align: center;
+        opacity: 0.8;
+        /* More visible on small screens */
+    }
+
+    /* Lightbox on Gallery Mobile */
+    .lb-content {
+        max-width: 95vw;
+    }
+
+    .lb-close {
+        top: -50px;
+        right: 0;
+    }
+}

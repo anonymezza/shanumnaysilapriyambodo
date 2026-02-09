@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery Dome - Shanum Naysila</title>
+
+    <!-- FAVICON (Standard Path) -->
+    <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="shanum.css">
+    <link rel="stylesheet" href="mobile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Force Reset for Gallery Page */
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        #dome-viewport {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            perspective: 1000px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
+        }
+
+        #dome-world {
+            position: absolute;
+            transform-style: preserve-3d;
+            width: 200px;
+            /* Small base for the pivot */
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Unique class to avoid conflicts with shanum.css */
+        .dome-card {
+            position: absolute;
+            width: 350px;
+            height: 450px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+            transform-style: preserve-3d;
+            cursor: pointer;
+            backface-visibility: hidden;
+        }
+
+        .dome-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+            transition: transform 0.5s ease;
+        }
+
+        .dome-card:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Updated Lightbox Overlay */
+        #dome-lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(35px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            perspective: 2000px;
+        }
+
+        #dome-lightbox.active {
+            opacity: 1;
+            display: flex;
+        }
+
+        .lb-aura {
+            position: absolute;
+            width: 80vw;
+            height: 80vw;
+            background: radial-gradient(circle, var(--color-accent-dim) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0.3;
+            filter: blur(50px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .lb-parallax-wrap {
+            position: relative;
+            z-index: 2;
+            transform-style: preserve-3d;
+            will-change: transform;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .lb-content {
+            position: relative;
+            max-width: 85vw;
+            max-height: 75vh;
+            transform: scale(0.8);
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transform-style: preserve-3d;
+        }
+
+        #dome-lightbox.active .lb-content {
+            transform: scale(1);
+        }
+
+        .lb-content img {
+            max-width: 100%;
+            max-height: 75vh;
+            border-radius: 20px;
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: block;
+        }
+
+        .lb-caption-box {
+            margin-top: 30px;
+            text-align: center;
+            color: #fff;
+            transform: translateZ(50px);
+            opacity: 0;
+            transition: 0.8s 0.3s;
+        }
+
+        #dome-lightbox.active .lb-caption-box {
+            opacity: 1;
+        }
+
+        .lb-caption-box h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--color-accent);
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+
+        .lb-caption-box p {
+            font-size: 0.8rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .lb-close {
+            position: absolute;
+            top: -80px;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: 0.4s;
+            z-index: 10;
+        }
+
+        .lb-close:hover {
+            background: var(--color-accent);
+            color: #000;
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .back-nav {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 12px 25px;
+            border-radius: 30px;
+            color: #D4AF37;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: 0.4s;
+        }
+
+        .back-nav:hover {
+            background: #D4AF37;
+            color: #000;
+        }
+
+        .hint {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #D4AF37;
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <a href="index.html" class="back-nav"><i class="fas fa-arrow-left"></i> BACK</a>
+
+    <div id="dome-viewport">
+        <div id="dome-world"></div>
+        <div class="hint">DRAG TO EXPLORE • CLICK TO ZOOM</div>
+    </div>
+
+    <div id="dome-lightbox">
+        <div class="lb-aura"></div>
+        <div class="lb-parallax-wrap">
+            <div class="lb-content">
+                <div class="lb-close" id="lb-close"><i class="fas fa-times"></i></div>
+                <img id="lb-img" src="" alt="Full View">
+                <div class="lb-caption-box">
+                    <h3 id="lb-title">Shanum Naysila</h3>
+                    <p id="lb-subtitle">Celestial Moment • EST. 2007</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const world = document.getElementById("dome-world");
+            const lb = document.getElementById("dome-lightbox");
+            const lbImg = document.getElementById("lb-img");
+            const lbClose = document.getElementById("lb-close");
+
+            const assets = ["1.jpeg", "2.jpeg", "3.jpeg", "4.jpeg", "6.jpeg", "7.jpeg", "8.jpeg"];
+            const radius = 950;
+            const rows = 3;
+            const perRow = 15;
+
+            let rotY = 0, rotX = 0, vx = 0, vy = 0, lastX = 0, lastY = 0, isDragging = false;
+            let downTime = 0, dist = 0;
+
+            // Generate
+            for (let r = 0; r < rows; r++) {
+                const tilt = (r - 1) * 30;
+                for (let i = 0; i < perRow; i++) {
+                    const card = document.createElement("div");
+                    card.className = "dome-card";
+                    const asset = assets[(r * perRow + i) % assets.length];
+                    card.innerHTML = `<img src="Assets/img/${asset}" alt="img">`;
+
+                    const angY = (360 / perRow) * i;
+                    gsap.set(card, {
+                        rotationX: -tilt,
+                        rotationY: angY,
+                        transformOrigin: `50% 50% ${radius}px`,
+                        z: -radius
+                    });
+
+                    // Direct Mousedown/Up for reliable click detection
+                    card.addEventListener("mousedown", (e) => {
+                        downTime = Date.now();
+                        dist = 0;
+                    });
+
+                    card.addEventListener("click", (e) => {
+                        const dur = Date.now() - downTime;
+                        if (dur < 250 && dist < 15) {
+                            lbImg.src = `Assets/img/${asset}`;
+                            lb.style.display = "flex";
+                            setTimeout(() => lb.classList.add("active"), 10);
+                        }
+                    });
+
+                    world.appendChild(card);
+                }
+            }
+
+            const cards = gsap.utils.toArray(".dome-card");
+
+            const aura = document.querySelector(".lb-aura");
+            const lbWrap = document.querySelector(".lb-parallax-wrap");
+
+            const closeLB = () => {
+                lb.classList.remove("active");
+                setTimeout(() => {
+                    lb.style.display = "none";
+                    lbImg.src = "";
+                    gsap.set([lbWrap, aura], { x: 0, y: 0, rotationX: 0, rotationY: 0 });
+                }, 500);
+            };
+            lbClose.onclick = closeLB;
+            lb.onclick = (e) => { if (e.target === lb || e.target === aura) closeLB(); };
+
+            // Lightbox Parallax Interaction
+            lb.addEventListener("mousemove", (e) => {
+                if (!lb.classList.contains("active")) return;
+                const x = (e.clientX / window.innerWidth - 0.5) * 2;
+                const y = (e.clientY / window.innerHeight - 0.5) * 2;
+
+                gsap.to(lbWrap, {
+                    rotationY: x * 15,
+                    rotationX: -y * 15,
+                    x: x * 30,
+                    y: y * 30,
+                    duration: 0.8,
+                    ease: "power2.out"
+                });
+
+                if (aura) {
+                    gsap.to(aura, {
+                        x: x * 100,
+                        y: y * 100,
+                        duration: 1.5,
+                        ease: "power2.out"
+                    });
+                }
+            });
+
+            // Render loop
+            gsap.ticker.add(() => {
+                if (!isDragging) {
+                    rotY += vx + 0.1;
+                    rotX += vy;
+                    vx *= 0.95;
+                    vy *= 0.95;
+                }
+                rotX = Math.max(-30, Math.min(30, rotX));
+                gsap.set(world, { rotationY: rotY, rotationX: rotX });
+
+                // Lighting
+                cards.forEach((card, i) => {
+                    const ang = (rotY + (360 / perRow) * (i % perRow) + 180) % 360;
+                    const norm = ((ang % 360) + 360) % 360 - 180;
+                    const bright = Math.max(0.1, 1 - Math.abs(norm) / 110);
+                    gsap.set(card, { filter: `brightness(${bright})` });
+                });
+            });
+
+            // Interaction
+            const start = (e) => {
+                isDragging = true;
+                const x = e.clientX || e.touches[0].clientX;
+                const y = e.clientY || e.touches[0].clientY;
+                lastX = x; lastY = y;
+                vx = vy = 0;
+            };
+            const move = (e) => {
+                if (!isDragging) return;
+                const x = e.clientX || e.touches[0].clientX;
+                const y = e.clientY || e.touches[0].clientY;
+                const dx = x - lastX, dy = y - lastY;
+                vx = dx * 0.15; vy = -dy * 0.15;
+                rotY += vx; rotX += vy;
+                dist += Math.abs(dx) + Math.abs(dy);
+                lastX = x; lastY = y;
+            };
+            const end = () => isDragging = false;
+
+            window.addEventListener("mousedown", start);
+            window.addEventListener("mousemove", move);
+            window.addEventListener("mouseup", end);
+            window.addEventListener("touchstart", start, { passive: false });
+            window.addEventListener("touchmove", move, { passive: false });
+            window.addEventListener("touchend", end);
+        });
+    </script>
+</body>
+
+</html>

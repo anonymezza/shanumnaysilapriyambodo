@@ -1,607 +1,348 @@
 <!DOCTYPE html>
-<html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shanum Naysila Priyambodo</title>
+<html lang="id" data-theme="dark">
 
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png" />
-    <link rel="manifest" href="favicon/site.webmanifest" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shanum Naysila Priyambodo</title>
 
-    <!-- UNTUK PWA & NOTIFIKASI -->
-    <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#e26868" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Shanum" />
-    <link rel="apple-touch-icon" href="favicon/favicon-192x192.png" />
-    <link rel="apple-touch-startup-image" href="favicon/apple-touch-icon.png" />
-    <meta name="msapplication-TileColor" content="#e26868" />
-    <meta name="msapplication-TileImage" content="favicon/favicon-144x144.png" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <!-- AKHIR TAMBAHAN  -->
+  <!-- Favicons -->
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
 
-    <link rel="stylesheet" href="shanum.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Dancing+Script:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Homemade+Apple&family=Sacramento&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <!-- Noise overlay -->
-    <div class="noise-overlay"></div>
+  <link rel="stylesheet" href="shanum.css" />
+  <link rel="stylesheet" href="mobile.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
 
-    <!-- Loading screen with count-up animation -->
-    <div class="loading-container">
-      <div class="count-up" id="count-up">0</div>
-      <div class="loading-text">Tunggu Sebentar...</div>
-      <div class="loading-bar">
-        <div class="loading-progress" id="loading-progress"></div>
-      </div>
+<body>
+  <!-- INTERACTIVE CURSOR CANVAS -->
+  <canvas id="cursor-canvas"
+    style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1;"></canvas>
+
+  <!-- BIRTHDAY OVERLAY -->
+  <div id="bday-overlay"
+    style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:99999; display:none; background:var(--color-bg); flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+    <h1 style="font-family:'Playfair Display', serif; font-size:10vw; color:var(--color-accent); line-height:1.2;">
+      Shanum's Day</h1>
+    <p style="margin-top:20px; font-size:1.5rem; letter-spacing:10px; color:var(--color-accent);">12 APRIL</p>
+    <button onclick="document.getElementById('bday-overlay').style.display='none'"
+      style="margin-top:50px; background:none; border:2px solid var(--color-accent); color:var(--color-accent); padding:15px 40px; border-radius:100px; cursor:pointer; font-weight:700;">ENTER
+      HER WORLD</button>
+  </div>
+
+
+
+  <!-- NAVIGATION SIDEBAR -->
+  <nav class="nav-side">
+    <!-- Integrated Theme Toggle (Top) -->
+    <div class="nav-btn theme-switch-btn" id="theme-toggle" title="Switch Theme">
+      <i class="fas fa-moon"></i>
     </div>
 
-    <!-- Floating Navigation -->
-    <nav class="floating-nav">
-      <div class="nav-bubble" data-section="header">
-        <i class="fas fa-home"></i>
-        <span class="nav-tooltip">Home</span>
-      </div>
-      <div class="nav-bubble" data-section="description">
-        <i class="fas fa-heart"></i>
-        <span class="nav-tooltip">Tentang</span>
-      </div>
-      <div class="nav-bubble" data-section="camera">
-        <i class="fas fa-camera-retro"></i>
-        <span class="nav-tooltip">Kamera</span>
-      </div>
-      <div class="nav-bubble" data-section="puzzle">
-        <i class="fas fa-puzzle-piece"></i>
-        <span class="nav-tooltip">Puzzle</span>
-      </div>
-      <div class="nav-bubble" data-section="music">
-        <i class="fas fa-music"></i>
-        <span class="nav-tooltip">Musik</span>
-      </div>
-      <div class="nav-bubble" data-section="timecapsule">
-        <i class="fas fa-capsules"></i>
-        <span class="nav-tooltip">Kapsul Waktu</span>
-      </div>
-      <div class="nav-bubble" data-section="countdown">
-        <i class="fas fa-birthday-cake"></i>
-        <span class="nav-tooltip">Countdown</span>
-      </div>
-      <div class="nav-bubble" data-section="share">
-        <i class="fas fa-share-alt"></i>
-        <span class="nav-tooltip">Bagikan</span>
-      </div>
-    </nav>
+    <!-- Separator -->
+    <div style="width: 16px; height: 1px; background: var(--color-glass-border); margin: 8px auto;"></div>
 
-    <!-- Tombol toggle untuk mobile -->
-    <div class="mobile-nav-toggle">
-      <i class="fas fa-bars"></i>
+    <div class="nav-btn active" data-section="hero" title="Home"><i class="fas fa-home"></i></div>
+    <div class="nav-btn" data-section="traits-sec" title="Personality"><i class="fas fa-wand-magic-sparkles"></i></div>
+    <div class="nav-btn" data-section="story-sec" title="About"><i class="fas fa-heart"></i></div>
+    <div class="nav-btn" data-section="timeline-sec" title="Path"><i class="fas fa-route"></i></div>
+    <div class="nav-btn" data-section="orbit-sec" title="Gallery"><i class="fas fa-gem"></i></div>
+    <div class="nav-btn" data-section="music-sec" title="Music"><i class="fas fa-music"></i></div>
+    <div class="nav-btn" data-section="puzzle-sec" title="Game"><i class="fas fa-puzzle-piece"></i></div>
+    <div class="nav-btn" data-section="timer-sec" title="Countdown"><i class="fas fa-hourglass-half"></i></div>
+
+  </nav>
+
+  <!-- DECORATIVE LAYERS -->
+  <div class="decor-blob" style="top: -10%; left: -10%;"></div>
+  <div class="decor-blob" style="bottom: 10%; right: -10%; opacity:0.4;"></div>
+
+  <!-- SMOOTH CONTENT -->
+  <div id="smooth-wrapper">
+    <div id="smooth-content">
+      <div class="parallax-giant-text" id="pg-1" style="top: 100vh; left: -10vw;">SHANUM</div>
+      <div class="parallax-giant-text" id="pg-2" style="top: 300vh; right: -5vw;">NAYSILA</div>
+      <div class="parallax-giant-text" id="pg-3" style="top: 500vh; left: 5vw;">PRIYAMBODO</div>
+
+      <!-- HERO -->
+      <section id="hero">
+        <div class="content-box">
+          <div
+            style="margin-bottom: 30px; letter-spacing: 12px; color: var(--color-accent); font-weight: 700; text-align: center; font-size: 0.9rem;">
+            PROFILE
+          </div>
+          <h1 class="hero-title-giant blur-text" id="h-title" style="margin-bottom: 40px;">
+            <div class="blur-line">Shanum</div>
+            <div class="blur-line" style="-webkit-text-stroke: 1.5px var(--color-accent); color: transparent;">Naysila
+            </div>
+            <div class="blur-line">Priyambodo</div>
+          </h1>
+          <div class="hero-sub-text split-text">
+            Sebuah bintang yang lahir untuk menerangi dunia. <br>
+            Lugu, baik hati, dan penuh dengan keajaiban yang tak terhingga.
+          </div>
+          <div style="display: flex; justify-content: center; margin-top: 60px;">
+            <div class="hero-floating-badge split-text" style="position: static; transform: none;">
+              <i class="fas fa-sparkles" style="color: var(--color-accent);"></i>
+              <span style="font-size: 0.9rem; letter-spacing: 3px;">EST. 2007</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. FLOATING TRAITS -->
+      <section id="traits-sec" class="traits-container">
+        <div class="floating-words-wrap">
+          <span class="f-word" style="top:10%; left:5%; --s:0.8;">KIND</span>
+          <span class="f-word" style="top:40%; left:80%; --s:1.2;">BRIGHT</span>
+          <span class="f-word" style="top:70%; left:15%; --s:0.9;">INTELLIGENT</span>
+          <span class="f-word" style="top:20%; left:60%; --s:1.5;">PURE</span>
+          <span class="f-word" style="top:85%; left:70%; --s:0.7;">MAGIC</span>
+          <span class="f-word" style="top:50%; left:10%; --s:1.1;">BRAVE</span>
+          <span class="f-word" style="top:30%; left:40%; --s:0.6;">DREAMER</span>
+        </div>
+        <div class="content-box" style="text-align:center;">
+          <h2 class="section-title-lux">Attractive</h2>
+          <p class="section-desc-lux">Pesona yang terpancar dari dalam hati yang tulus.</p>
+        </div>
+      </section>
+
+      <!-- STORY -->
+      <section id="story-sec">
+        <div class="content-box">
+          <div class="asym-grid reverse-grid">
+            <div class="hero-visual-wrap" style="height:65vh; border-radius:30px; mask-image:none;">
+              <img src="Assets/img/4.jpeg" alt="Story Asset">
+            </div>
+            <div style="padding-left:4vw;">
+              <h2
+                style="font-family:'Caveat', cursive; font-size:4.5rem; color:var(--color-accent); margin-bottom:25px;">
+                Heart of a Star</h2>
+              <p style="font-size:1.25rem; line-height:2.2; color:var(--color-text-dim);">
+                Shanum, seseorang yang berbeda juga spesial. Pandai, lugu, dan sangat baik hati.
+                Bagiku kamu begitu sempurna, semakin ku amati seiring berjalannya waktu, kamu terlihat semakin begitu
+                berbinar.
+                Kehadiranmu adalah hadiah terindah bagi alam semesta ini.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 1. STARDUST TIMELINE -->
+      <section id="timeline-sec">
+        <div class="content-box">
+          <div class="timeline-engine">
+            <div class="timeline-line"></div>
+
+            <div class="timeline-item left">
+              <div class="tl-content">
+                <div class="tl-img-wrap"><img src="Assets/img/1.jpeg" alt="T1"></div>
+                <h3>The First</h3>
+                <p>Lahir Pada 12 April 2007.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item right">
+              <div class="tl-content">
+                <div class="tl-img-wrap"><img src="Assets/img/2.jpeg" alt="T2"></div>
+                <h3>Growth of Grace</h3>
+                <p>Bertumbuh dengan kelembutan yang memikat hati.</p>
+              </div>
+            </div>
+
+            <div class="timeline-item left">
+              <div class="tl-content">
+                <div class="tl-img-wrap"><img src="Assets/img/3.jpeg" alt="T3"></div>
+                <h3>Eternal Brilliance</h3>
+                <p>Cahaya yang takkan pernah pudar oleh waktu.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. GALLERY ORBIT PREVIEW -->
+      <section id="orbit-sec" style="flex-direction:column;">
+        <div class="content-box" style="text-align:center; margin-bottom:40px;">
+          <h2 class="section-title-lux">The Galaxy</h2>
+          <p
+            style="color:var(--color-accent); letter-spacing:8px; text-transform:uppercase; font-weight:600; margin-bottom: 30px;">
+            Explore her moments</p>
+
+          <!-- PREMIUM PORTAL LOGO -->
+          <div class="portal-magnetic-wrap">
+            <a href="gallery.html" class="portal-logo" style="text-decoration: none;">
+              <div class="portal-aura"></div>
+              <div class="portal-circle">
+                <i class="fas fa-expand-arrows-alt"></i>
+              </div>
+              <!-- SVG Circular Text for Sharpness -->
+              <svg class="portal-svg" viewBox="0 0 100 100">
+                <path id="circlePath" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" fill="transparent" />
+                <text class="portal-svg-text">
+                  <textPath xlink:href="#circlePath" spacing="auto">
+                    ENTER FULL IMMERSIVE DOME • SHANUM •
+                  </textPath>
+                </text>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="ring-view-container" id="ring-container">
+          <div class="ring-engine-wrap" id="ring-engine">
+            <div class="ring-card-item"><img src="Assets/img/1.jpeg" alt="S1"></div>
+            <div class="ring-card-item"><img src="Assets/img/2.jpeg" alt="S2"></div>
+            <div class="ring-card-item"><img src="Assets/img/3.jpeg" alt="S3"></div>
+            <div class="ring-card-item"><img src="Assets/img/4.jpeg" alt="S4"></div>
+            <div class="ring-card-item"><img src="Assets/img/6.jpeg" alt="S5"></div>
+            <div class="ring-card-item"><img src="Assets/img/7.jpeg" alt="S6"></div>
+            <div class="ring-card-item"><img src="Assets/img/8.jpeg" alt="S7"></div>
+          </div>
+        </div>
+      </section>
+
+
+
+      <!-- MUSIC Section with Needle -->
+      <section id="music-sec">
+        <div class="content-box">
+          <div class="studio-box">
+            <div style="position:relative;">
+              <div class="vinyl-core" id="v-spin">
+                <div
+                  style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:90px; height:90px; background:var(--color-accent); border-radius:50%; border:6px solid #000; z-index:2;">
+                </div>
+              </div>
+              <div class="vinyl-needle" id="v-needle"></div>
+            </div>
+            <div style="flex:1;">
+              <h2 id="cur-song"
+                style="font-family:'Playfair Display', serif; font-size:3.5rem; margin-bottom:35px; color:var(--color-accent);">
+                Select Melody</h2>
+              <div style="display:flex; gap:30px; align-items:flex-start;">
+                <div class="playlist-lux" id="track-list" style="flex:1;"></div>
+
+                <!-- Vertical Volume Control -->
+                <div class="volume-vertical-wrap">
+                  <i class="fas fa-volume-up"
+                    style="color:var(--color-accent); font-size:1rem; margin-bottom:15px;"></i>
+                  <div class="volume-slider-box">
+                    <input type="range" id="v-volume" min="0" max="100" value="70" class="v-slider-vertical"
+                      title="Volume">
+                  </div>
+                  <i class="fas fa-volume-down"
+                    style="color:var(--color-text-dim); font-size:0.8rem; margin-top:15px;"></i>
+                </div>
+              </div>
+
+              <!-- Music Controls -->
+              <div style="display:flex; align-items:center; gap:20px; margin-top:50px;">
+                <!-- Previous Button -->
+                <button id="v-prev"
+                  style="width:50px; height:50px; border-radius:50%; border:2px solid var(--color-accent); background:transparent; color:var(--color-accent); font-size:1.2rem; cursor:pointer; transition:0.3s;"
+                  title="Previous"><i class="fas fa-step-backward"></i></button>
+
+                <!-- Play/Pause Button -->
+                <button id="v-toggle"
+                  style="width:75px; height:75px; border-radius:50%; border:none; background:var(--color-accent); color:#000; font-size:1.5rem; cursor:pointer;"><i
+                    class="fas fa-play"></i></button>
+
+                <!-- Next Button -->
+                <button id="v-next"
+                  style="width:50px; height:50px; border-radius:50%; border:2px solid var(--color-accent); background:transparent; color:var(--color-accent); font-size:1.2rem; cursor:pointer; transition:0.3s;"
+                  title="Next"><i class="fas fa-step-forward"></i></button>
+
+                <!-- Progress Bar -->
+                <div style="flex:1;">
+                  <div id="v-prog-container"
+                    style="height:6px; background:var(--color-glass-border); border-radius:10px; overflow:hidden; cursor:pointer; margin-bottom:10px;">
+                    <div id="v-prog" style="width:0%; height:100%; background:var(--color-accent);"></div>
+                  </div>
+                  <div
+                    style="display:flex; justify-content:space-between; font-size:0.85rem; color:var(--color-text-dim);">
+                    <span id="time-current">0:00</span>
+                    <span id="time-total">0:00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PUZZLE -->
+      <section id="puzzle-sec">
+        <div class="content-box" style="text-align:center;">
+          <h2 style="font-family:'Caveat', cursive; font-size:4.5rem; color:var(--color-accent); margin-bottom:50px;">
+            Digital Perfection</h2>
+          <div id="p-grid"
+            style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; width:450px; height:450px; max-width:100%; margin:0 auto; padding:15px; background:var(--color-surface); border-radius:40px;">
+          </div>
+          <div style="margin-top:60px; display:flex; justify-content:center; gap:50px;">
+            <span id="p-sh"
+              style="cursor:pointer; letter-spacing:4px; text-transform:uppercase; font-weight:700; color:var(--color-accent);">Shuffle</span>
+            <span id="p-sv"
+              style="cursor:pointer; letter-spacing:4px; text-transform:uppercase; font-weight:700; color:var(--color-text-dim);">Reset</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- COUNTDOWN -->
+      <section id="timer-sec" class="countdown-section">
+        <div class="content-box">
+          <h2 style="font-family:'Playfair Display', serif; font-size:3.5rem; margin-bottom:10px; font-weight:700;">
+            Counting to her brilliance</h2>
+          <p
+            style="color:var(--color-accent); letter-spacing:8px; text-transform:uppercase; font-size:0.9rem; font-weight:600;">
+            12 April 2007</p>
+          <div class="countdown-flex">
+            <div>
+              <div class="count-unit" id="d-val">00</div>
+              <div class="unit-label">Days</div>
+            </div>
+            <div>
+              <div class="count-unit" id="h-val">00</div>
+              <div class="unit-label">Hours</div>
+            </div>
+            <div>
+              <div class="count-unit" id="m-val">00</div>
+              <div class="unit-label">Min</div>
+            </div>
+            <div>
+              <div class="count-unit" id="s-val">00</div>
+              <div class="unit-label">Sec</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer
+        style="padding:100px 20px; text-align:center; opacity:0.4; border-top:1px solid var(--color-glass-border);">
+        <h2 style="font-family:'Playfair Display',serif; font-size:1.8rem; letter-spacing:2px;">- Shanum Naysila
+          Priyambodo -</h2>
+        <p style="margin-top:20px; font-size:0.7rem; letter-spacing:8px; text-transform:uppercase;">Profile
+          | Beauty</p>
+      </footer>
+
     </div>
+  </div>
 
-    <!-- Music player -->
-    <div class="music-player" id="music-player">
-      <i class="fas fa-music"></i>
-      <audio id="bg-music" loop>
-        <source src="Assets/music/lover-taylor.mp3" type="audio/mpeg" />
-      </audio>
-    </div>
+  <audio id="core-audio"></audio>
 
-    <!-- Camera simulator -->
-    <div class="camera-simulator-container" id="camera-simulator">
-      <div class="camera-simulator">
-        <div class="camera-body">
-          <div class="camera-lens"></div>
-          <div class="camera-flash" id="camera-flash"></div>
-          <button class="shutter-btn" id="shutter-btn">
-            <i class="fas fa-camera"></i>
-          </button>
-          <div class="camera-strap"></div>
-        </div>
 
-        <div class="polaroid-output" id="polaroid-output">
-          <div class="polaroid-frame-full" id="polaroid-frame-full">
-            <img src="Assets/img/4.jpeg" alt="" class="captured-photo" id="captured-photo" />
-            <div class="polaroid-caption" id="polaroid-caption">Memory for Shanum</div>
-            <div class="polaroid-date" id="polaroid-date"></div>
-          </div>
-          <div class="developing-text">Mengembangkan foto...</div>
-        </div>
 
-        <div class="camera-controls">
-          <button class="camera-control-btn" id="filter-toggle"><i class="fas fa-sliders-h"></i> Filter</button>
-          <button class="camera-control-btn" id="upload-photo"><i class="fas fa-upload"></i> Upload</button>
-          <button class="camera-control-btn" id="download-photo"><i class="fas fa-download"></i> Download</button>
-          <input type="file" id="photo-upload" accept="image/*" style="display: none" />
-        </div>
+  <!-- SCRIPTS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+  <script src="script.js"></script>
+</body>
 
-        <div class="filter-options" id="filter-options">
-          <button class="filter-btn" data-filter="vintage">Vintage</button>
-          <button class="filter-btn" data-filter="sepia">Sepia</button>
-          <button class="filter-btn" data-filter="blackwhite">Hitam Putih</button>
-          <button class="filter-btn" data-filter="warm">Hangat</button>
-          <button class="filter-btn" data-filter="cool">Dingin</button>
-        </div>
-      </div>
-      <button id="camera-close-btn"><i class="fas fa-times"></i></button>
-    </div>
-
-    <!-- Header section -->
-    <section class="header-section" id="header">
-      <div class="retro-border retro-border-top"></div>
-
-      <div class="polaroid-frame animate-on-scroll scale-in" id="polaroid-frame">
-        <img src="Assets/img/2.jpeg" alt="Foto Shanum" class="main-photo" id="main-photo" />
-      </div>
-
-      <h1 class="main-heading animate-on-scroll fade-in-down" id="main-heading">Shanum Naysila Priyambodo</h1>
-      <p class="main-subtitle animate-on-scroll fade-in-down" id="main-subtitle">Seorang istimewa dengan keindahan tak terlukiskan</p>
-
-      <div class="polaroid-sticker sticker-1 animate-on-scroll fade-in-up" id="sticker-1">Pleasant</div>
-      <div class="polaroid-sticker sticker-2 animate-on-scroll fade-in-up" id="sticker-2">Lovely</div>
-      <div class="polaroid-sticker sticker-3 animate-on-scroll fade-in-up" id="sticker-3">Pretty</div>
-
-      <div class="retro-border retro-border-bottom"></div>
-    </section>
-
-    <!-- Description section -->
-    <section class="description-section" id="description">
-      <div class="container">
-        <div class="description-content animate-on-scroll fade-in-left" id="description-content">
-          <h2 class="animate-on-scroll fade-in-down">forU</h2>
-          <div class="description-text animate-on-scroll fade-in-up">
-            <p>Shanum, seseorang yang berbeda juga spesial. Pandai, lugu, dan sangat baik hati - yang membuat kupu-kupu bahkan mengaguminya.</p>
-            <p>
-              Aku mengamatimu dari hal sekecil sekalipun. Bahkan saat kamu tidak sengaja berbicara sepatah kata padaku, itu sudah cukup membuat hariku berarti. Hal sepele seperti itu langsung kuceritakan ke temanku dengan penuh kebahagiaan.
-            </p>
-            <p>Sudah berapa tahun aku mengamatimu dari kejauhan. Beberapa tahun yang begitu berkesan. Bagiku kamu begitu sempurna, semakin ku amati seiring berjalannya waktu, kamu terlihat semakin begitu berbinar.</p>
-            <p>Mungkin sekarang kamu telah menemukan orang yang tepat untuk dapat mengatasi kekosonganmu, orang istimewa yang menjadi pilihanmu. Pasti kamu akan terus bahagia.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Puzzle section -->
-    <section class="puzzle-section" id="puzzle">
-      <div class="container">
-        <h2 class="section-title animate-on-scroll fade-in-down">Puzzle Kenangan</h2>
-        <p class="section-subtitle animate-on-scroll fade-in-down">Pilih gambar dan susun potongan puzzle untuk melihat kenangan indah</p>
-
-        <div class="puzzle-container animate-on-scroll fade-in-up">
-          <!-- Preview Images -->
-          <div class="preview-images animate-on-scroll fade-in-up" id="preview-images">
-            <!-- Preview images akan di-generate oleh JavaScript -->
-          </div>
-
-          <!-- Puzzle Board -->
-          <div class="puzzle-board-wrapper">
-            <div class="puzzle-board animate-on-scroll scale-in" id="puzzle-board">
-              <!-- Puzzle pieces will be generated here -->
-            </div>
-          </div>
-
-          <!-- Puzzle Controls -->
-          <div class="puzzle-controls animate-on-scroll fade-in-up">
-            <!-- Image Selector -->
-            <div class="image-selector-container animate-on-scroll fade-in-up">
-              <label for="puzzle-image-selector"><i class="fas fa-image"></i> Pilih Gambar:</label>
-              <select id="puzzle-image-selector" class="puzzle-image-selector animate-on-scroll fade-in-up">
-                <option value="1">Gambar 1 - Shanum</option>
-                <option value="2">Gambar 2 - Naysila</option>
-                <option value="3">Gambar 3 - Priyambodo</option>
-              </select>
-            </div>
-
-            <!-- Control Buttons -->
-            <div class="control-buttons animate-on-scroll fade-in-up">
-              <button class="puzzle-btn animate-on-scroll fade-in-up" id="random-image-btn"><i class="fas fa-random"></i> Gambar Acak</button>
-              <button class="puzzle-btn animate-on-scroll fade-in-up" id="shuffle-puzzle"><i class="fas fa-random"></i> Acak Puzzle</button>
-              <button class="puzzle-btn animate-on-scroll fade-in-up" id="solve-puzzle"><i class="fas fa-lightbulb"></i> Lihat Gambar</button>
-            </div>
-
-            <!-- Stats -->
-            <div class="puzzle-stats animate-on-scroll fade-in-up">
-              <div class="puzzle-timer animate-on-scroll fade-in-up">
-                <i class="fas fa-clock"></i>
-                <span id="puzzle-time">00:00</span>
-              </div>
-              <div class="puzzle-moves animate-on-scroll fade-in-up">
-                <i class="fas fa-arrows-alt"></i>
-                <span id="puzzle-moves">0</span> Langkah
-              </div>
-              <div class="puzzle-difficulty animate-on-scroll fade-in-up">
-                <i class="fas fa-layer-group"></i>
-                <span>Tingkat: <span id="puzzle-difficulty">Mudah</span></span>
-              </div>
-            </div>
-
-            <!-- Current Image Info -->
-            <div class="current-image-info animate-on-scroll fade-in-up" id="current-image-info">
-              <i class="fas fa-info-circle"></i>
-              <span>Sedang memainkan: <strong id="current-image-name"></strong></span>
-            </div>
-          </div>
-
-          <!-- Puzzle Complete Message -->
-          <div class="puzzle-complete animate-on-scroll scale-in" id="puzzle-complete">
-            <div class="complete-content">
-              <div class="trophy-icon">
-                <i class="fas fa-trophy"></i>
-              </div>
-              <h3>Puzzle Selesai!</h3>
-              <p class="complete-message">Kamu berhasil menyusun kenangan indah ini!</p>
-
-              <div class="complete-stats">
-                <div class="stat-item animate-on-scroll fade-in-up">
-                  <i class="fas fa-clock"></i>
-                  <span>Waktu: <strong id="complete-time">00:00</strong></span>
-                </div>
-                <div class="stat-item animate-on-scroll fade-in-up">
-                  <i class="fas fa-arrows-alt"></i>
-                  <span>Langkah: <strong id="complete-moves">0</strong></span>
-                </div>
-                <div class="stat-item animate-on-scroll fade-in-up">
-                  <i class="fas fa-image"></i>
-                  <span>Gambar: <strong id="complete-image">Gambar 1</strong></span>
-                </div>
-              </div>
-
-              <div class="complete-buttons">
-                <button class="puzzle-btn complete-btn animate-on-scroll fade-in-up" id="new-puzzle"><i class="fas fa-plus"></i> Puzzle Baru</button>
-                <button class="puzzle-btn complete-btn animate-on-scroll fade-in-up" id="share-puzzle"><i class="fas fa-share-alt"></i> Bagikan</button>
-                <button class="puzzle-btn complete-btn animate-on-scroll fade-in-up" id="next-puzzle"><i class="fas fa-arrow-right"></i> Gambar Berikutnya</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Music album section -->
-    <section class="music-section" id="music">
-      <div class="container">
-        <h2 class="section-title animate-on-scroll fade-in-down">Album Musik Kenangan</h2>
-        <p class="section-subtitle animate-on-scroll fade-in-down">Koleksi lagu</p>
-
-        <div class="music-player-large animate-on-scroll fade-in-left">
-          <!-- PERBAIKAN: Hapus class scale-in dan letakkan tonearm & glow di DALAM album-cover -->
-          <div class="album-cover">
-            <img src="Assets/img/guitar.jpg" alt="Album Cover" />
-
-            <!-- VINYL -->
-            <div class="vinyl-record">
-              <div class="vinyl-center"></div>
-            </div>
-            <!-- JARUM PEMUTAR VINYL -->
-            <div class="tonearm"></div>
-            <!-- EFEK CAHAYA -->
-            <div class="vinyl-glow"></div>
-          </div>
-
-          <div class="player-controls animate-on-scroll fade-in-right">
-            <div class="now-playing animate-on-scroll fade-in-down">
-              <h3 id="now-playing-title">Lagu Kenangan</h3>
-              <p id="now-playing-artist">Untuk Shanum</p>
-            </div>
-
-            <div class="playlist animate-on-scroll fade-in-up" id="playlist">
-              <div class="playlist-item active animate-on-scroll fade-in-left" data-src="Assets\music\Harry Styles - As It Was (Official Video).mp3" data-title="As It Was" data-artist="Harry Styles">
-                <div class="song-number">1</div>
-                <div class="song-info">
-                  <div class="song-title">As It Was</div>
-                  <div class="song-artist">Harry Styles</div>
-                </div>
-                <div class="song-duration">2:47</div>
-              </div>
-
-              <div class="playlist-item animate-on-scroll fade-in-left" data-src="Assets\music\Harry Styles - Fine Line (Official Audio).mp3" data-title="Fine Line" data-artist="Harry Styles">
-                <div class="song-number">2</div>
-                <div class="song-info">
-                  <div class="song-title">Fine Line</div>
-                  <div class="song-artist">Harry Styles</div>
-                </div>
-                <div class="song-duration">6:17</div>
-              </div>
-
-              <div class="playlist-item animate-on-scroll fade-in-left" data-src="Assets\music\Anthony Lazaro & Jason LaPierre - Flutter of a Butterfly.mp3" data-title="Flutter of a Butterfly" data-artist="Anthony Lazaro & Jason LaPierre">
-                <div class="song-number">3</div>
-                <div class="song-info">
-                  <div class="song-title">Flutter of a Butterfly</div>
-                  <div class="song-artist">Anthony Lazaro & Jason LaPierre</div>
-                </div>
-                <div class="song-duration">2:55</div>
-              </div>
-
-              <div class="playlist-item animate-on-scroll fade-in-left" data-src="Assets\music\Anthony Lazaro - Small Rainbows.mp3" data-title="Small Rainbows" data-artist="Anthony Lazaro">
-                <div class="song-number">4</div>
-                <div class="song-info">
-                  <div class="song-title">Small Rainbows</div>
-                  <div class="song-artist">Anthony Lazaro</div>
-                </div>
-                <div class="song-duration">3:27</div>
-              </div>
-
-              <div class="playlist-item animate-on-scroll fade-in-left" data-src="Assets\music\Duara - And Time Froze (Official Visualizer).mp3" data-title="And Time Froze" data-artist="Duara">
-                <div class="song-number">5</div>
-                <div class="song-info">
-                  <div class="song-title">And Time Froze</div>
-                  <div class="song-artist">Duara</div>
-                </div>
-                <div class="song-duration">3:15</div>
-              </div>
-
-              <div class="playlist-item animate-on-scroll fade-in-left" data-src="Assets\music\Daun Jatuh - Kita Sama (Official Audio).mp3" data-title="Kita Sama" data-artist="Daun Jatuh">
-                <div class="song-number">6</div>
-                <div class="song-info">
-                  <div class="song-title">Kita Sama</div>
-                  <div class="song-artist">Daun Jatuh</div>
-                </div>
-                <div class="song-duration">4:02</div>
-              </div>
-
-              <div class="playlist-item animate-on-scroll fade-in-left" data-src="Assets\music\Di Antara Rindu.mp3" data-title="Di antara Rindu" data-artist="Indische Party">
-                <div class="song-number">7</div>
-                <div class="song-info">
-                  <div class="song-title">Di Antara Rindu</div>
-                  <div class="song-artist">Indische Party</div>
-                </div>
-                <div class="song-duration">3:53</div>
-              </div>
-
-              <div class="playlist-item animate-on-scroll fade-in-left" data-src="Assets\music\Perunggu - Pastikan Riuh Akhiri Malammu (Official Music Video).mp3" data-title="Pastikan Riuh Akhiri Malammu" data-artist="Perunggu">
-                <div class="song-number">8</div>
-                <div class="song-info">
-                  <div class="song-title">Pastikan Riuh Akhiri Malammu</div>
-                  <div class="song-artist">Perunggu</div>
-                </div>
-                <div class="song-duration">4:46</div>
-              </div>
-
-              <div class="playlist-item animate-on-scroll fade-in-left" data-src="Assets\music\Pelukku-untuk-pelikmu.mp3" data-title="Pelukku Untuk Pelikmu" data-artist="Fiersa Besari">
-                <div class="song-number">9</div>
-                <div class="song-info">
-                  <div class="song-title">Pelukku Untuk Pelikmu</div>
-                  <div class="song-artist">Fiersa Besari</div>
-                </div>
-                <div class="song-duration">4:23</div>
-              </div>
-
-              <div class="playlist-item animate-on-scroll fade-in-left" data-src="Assets\music\Perunggu  Ini Abadi.mp3" data-title="Ini Abadi" data-artist="Perunggu">
-                <div class="song-number">10</div>
-                <div class="song-info">
-                  <div class="song-title">Ini Abadi</div>
-                  <div class="song-artist">Perunggu</div>
-                </div>
-                <div class="song-duration">3:52</div>
-              </div>
-            </div>
-
-            <div class="player-buttons animate-on-scroll fade-in-up">
-              <button class="player-btn animate-on-scroll fade-in-up" id="prev-song">
-                <i class="fas fa-step-backward"></i>
-              </button>
-              <button class="player-btn play-btn animate-on-scroll fade-in-up" id="play-pause">
-                <i class="fa-solid fa-play"></i>
-              </button>
-              <button class="player-btn animate-on-scroll fade-in-up" id="next-song">
-                <i class="fas fa-step-forward"></i>
-              </button>
-            </div>
-
-            <div class="volume-control animate-on-scroll fade-in-up">
-              <i class="fas fa-volume-up"></i>
-              <input type="range" id="volume-slider" min="0" max="100" value="70" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Time capsule section -->
-    <section class="timecapsule-section" id="timecapsule">
-      <div class="container">
-        <h2 class="section-title animate-on-scroll fade-in-down">Kapsul Waktu Digital</h2>
-        <p class="section-subtitle animate-on-scroll fade-in-down">Pesan yang akan terbuka di masa depan</p>
-
-        <div class="timecapsule-container animate-on-scroll fade-in-right">
-          <div class="capsule animate-on-scroll scale-in">
-            <div class="capsule-top"></div>
-            <div class="capsule-body">
-              <div class="capsule-date" id="capsule-date">31 Desember 2025</div>
-              <div class="capsule-message" id="capsule-message">"Untuk Shanum di masa depan, semoga kamu selalu bahagia..."</div>
-            </div>
-            <div class="capsule-bottom"></div>
-          </div>
-
-          <div class="capsule-controls animate-on-scroll fade-in-left">
-            <div class="date-selector animate-on-scroll fade-in-up">
-              <label for="open-date">Buka pada tanggal:</label>
-              <input type="date" id="open-date" min="2023-12-01" />
-            </div>
-
-            <div class="message-input animate-on-scroll fade-in-up">
-              <textarea id="capsule-input" placeholder="Tulis pesan untuk masa depan..."></textarea>
-              <button class="capsule-btn animate-on-scroll fade-in-up" id="seal-capsule"><i class="fas fa-lock"></i> Segel Kapsul</button>
-            </div>
-
-            <div class="capsule-info animate-on-scroll fade-in-up">
-              <p><i class="fas fa-info-circle"></i> Pesan akan terkunci hingga tanggal yang ditentukan</p>
-            </div>
-          </div>
-
-          <div class="sealed-capsules animate-on-scroll fade-in-up" id="sealed-capsules">
-            <h3><i class="fas fa-box"></i> Kapsul Tersegel</h3>
-            <!-- Sealed capsules will appear here -->
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Countdown section -->
-    <section class="countdown-section" id="countdown">
-      <div class="container">
-        <h2 class="section-title animate-on-scroll fade-in-down">Menuju Hari Spesial Berikutnya</h2>
-        <p class="section-subtitle animate-on-scroll fade-in-down">Hitung mundur ke hari ulang tahun Shanum berikutnya</p>
-
-        <div class="countdown-container animate-on-scroll scale-in">
-          <div class="countdown-display animate-on-scroll fade-in-up">
-            <div class="countdown-item animate-on-scroll scale-in">
-              <div class="countdown-number" id="countdown-days">00</div>
-              <div class="countdown-label">Hari</div>
-            </div>
-            <div class="countdown-separator animate-on-scroll fade-in-down">:</div>
-            <div class="countdown-item animate-on-scroll scale-in">
-              <div class="countdown-number" id="countdown-hours">00</div>
-              <div class="countdown-label">Jam</div>
-            </div>
-            <div class="countdown-separator animate-on-scroll fade-in-down">:</div>
-            <div class="countdown-item animate-on-scroll scale-in">
-              <div class="countdown-number" id="countdown-minutes">00</div>
-              <div class="countdown-label">Menit</div>
-            </div>
-            <div class="countdown-separator animate-on-scroll fade-in-down">:</div>
-            <div class="countdown-item animate-on-scroll scale-in">
-              <div class="countdown-number" id="countdown-seconds">00</div>
-              <div class="countdown-label">Detik</div>
-            </div>
-          </div>
-
-          <div class="countdown-info animate-on-scroll fade-in-up">
-            <div class="next-birthday animate-on-scroll fade-in-left">
-              <i class="fas fa-birthday-cake"></i>
-              <span>Ulang tahun berikutnya: <span id="next-birthday-date">1 Januari 2024</span></span>
-            </div>
-            <div class="countdown-message animate-on-scroll fade-in-right">
-              <p>"Semoga setiap detik menuju hari spesialmu dipenuhi kebahagiaan"</p>
-            </div>
-          </div>
-
-          <div class="birthday-wishes animate-on-scroll fade-in-up">
-            <h3 class="animate-on-scroll fade-in-down"><i class="fas fa-gift"></i> Kirim Ucapan</h3>
-            <div class="wish-input animate-on-scroll fade-in-up">
-              <textarea id="birthday-wish" placeholder="Tulis ucapan untuk Shanum..."></textarea>
-              <button class="wish-btn animate-on-scroll fade-in-up" id="send-wish"><i class="fas fa-paper-plane"></i> Kirim</button>
-            </div>
-            <div class="wishes-wall animate-on-scroll fade-in-up" id="wishes-wall">
-              <!-- Birthday wishes will appear here -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Share section -->
-    <section class="share-section" id="share">
-      <div class="container">
-        <h2 class="section-title animate-on-scroll fade-in-down">Bagikan Kenangan Indah</h2>
-        <p class="section-subtitle animate-on-scroll fade-in-down">Sebarkan kebahagiaan ini kepada orang lain</p>
-
-        <div class="share-container animate-on-scroll fade-in-up">
-          <!-- Share Options -->
-          <div class="share-options animate-on-scroll fade-in-up">
-            <button class="share-option-btn animate-on-scroll fade-in-up" data-platform="whatsapp">
-              <i class="fab fa-whatsapp"></i>
-              <span>WhatsApp</span>
-            </button>
-            <button class="share-option-btn animate-on-scroll fade-in-up" data-platform="facebook">
-              <i class="fab fa-facebook"></i>
-              <span>Facebook</span>
-            </button>
-            <button class="share-option-btn animate-on-scroll fade-in-up" data-platform="twitter">
-              <i class="fab fa-twitter"></i>
-              <span>Twitter</span>
-            </button>
-            <button class="share-option-btn animate-on-scroll fade-in-up" data-platform="pinterest">
-              <i class="fab fa-pinterest"></i>
-              <span>Pinterest</span>
-            </button>
-            <button class="share-option-btn animate-on-scroll fade-in-up" data-platform="instagram">
-              <i class="fab fa-instagram"></i>
-              <span>Instagram</span>
-            </button>
-            <button class="share-option-btn animate-on-scroll fade-in-up" id="copy-link">
-              <i class="fas fa-link"></i>
-              <span>Salin Tautan</span>
-            </button>
-          </div>
-
-          <!-- Kustomisasi Tampilan dalam 1 Section -->
-          <div class="share-customize-container">
-            <div class="share-preview animate-on-scroll fade-in-up">
-              <div class="preview-card animate-on-scroll scale-in" id="preview-card">
-                <div class="preview-image">
-                  <img src="Assets/img/6.jpeg" alt="Preview" id="share-preview-image" />
-                </div>
-                <div class="preview-content" id="share-preview-content">
-                  <h3 id="share-preview-title">Kenangan Indah untuk Shanum</h3>
-                  <p id="share-preview-desc">Kumpulan kenangan dan pesan spesial untuk seseorang yang sangat berarti</p>
-                  <div class="preview-url">https://shanumnaysilapriyambodo.netlify.app/</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="share-customize animate-on-scroll fade-in-up">
-              <div class="customize-section">
-                <h3><i class="fas fa-palette"></i> Kustomisasi Tampilan</h3>
-                <div class="customize-options">
-                  <div class="color-option active" data-color="#FF8787" data-title-color="#E26868" data-bg-color="#FFF" style="background-color: #ff8787"></div>
-                  <div class="color-option" data-color="#E26868" data-title-color="#FF8787" data-bg-color="#F5F5F5" style="background-color: #e26868"></div>
-                  <div class="color-option" data-color="#D8D9CF" data-title-color="#5D4A2E" data-bg-color="#FFF" style="background-color: #d8d9cf"></div>
-                  <div class="color-option" data-color="#EDEDED" data-title-color="#333" data-bg-color="#FFF" style="background-color: #ededed"></div>
-                  <div class="color-option" data-color="#F7E733" data-title-color="#333" data-bg-color="#FFF" style="background-color: #f7e733"></div>
-                </div>
-              </div>
-
-              <div class="share-instagram-section">
-                <h3><i class="fab fa-instagram"></i> Bagikan ke Instagram</h3>
-                <p>Unggah gambar yang telah dikustomisasi ke Instagram</p>
-                <button class="customize-btn instagram-btn" id="share-to-instagram"><i class="fab fa-instagram"></i> Bagikan ke Instagram</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Instagram Share Modal -->
-          <div class="instagram-modal" id="instagram-modal">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h3><i class="fab fa-instagram"></i> Bagikan ke Instagram</h3>
-                <button class="modal-close" id="modal-close">&times;</button>
-              </div>
-              <div class="modal-body">
-                <p>1. Simpan gambar di bawah ini ke perangkat Anda</p>
-                <p>2. Buka aplikasi Instagram</p>
-                <p>3. Unggah gambar sebagai postingan atau story</p>
-                <div class="modal-image-container">
-                  <img id="modal-image-preview" src="" alt="Preview untuk Instagram" />
-                </div>
-                <div class="modal-actions">
-                  <button id="save-instagram-image"><i class="fas fa-download"></i></button>
-                  <button id="copy-instagram-caption"><i class="fas fa-copy"></i></button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer-section">
-      <div class="container">
-        <div class="footer-content animate-on-scroll fade-in-up">
-          <p class="closing-message animate-on-scroll fade-in-down">Terima kasih telah menjadi teman kelas yang istimewa. Semoga kita dapat bertemu lagi di lain waktu. LoveYou.</p>
-          <p class="animate-on-scroll fade-in-up">Goodluck untuk hari-hari kedepan yang akan kamu jalani. Semoga seperti apa yang kamu ingin dan harap😜.</p>
-          <p class="signature animate-on-scroll fade-in-down">- Untuk Shanum -</p>
-        </div>
-      </div>
-    </footer>
-
-    <script src="script.js"></script>
-  </body>
 </html>
