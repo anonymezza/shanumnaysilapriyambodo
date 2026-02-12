@@ -318,3 +318,122 @@
         margin: 15px auto;
     }
 }
+
+/* --- OVERFLOW & PUZZLE FIXES (Mobile) --- */
+html,
+body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+
+    /* Puzzle Sizing */
+    #p-grid {
+        width: 320px !important;
+        height: 320px !important;
+        gap: 5px !important;
+        padding: 10px !important;
+    }
+
+    /* Prevent overflow on sections */
+    section {
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
+    /* Scale down giant text */
+    .parallax-giant-text {
+        font-size: 15vw;
+        /* Smaller than 20vw */
+        opacity: 0.05;
+    }
+}
+
+@media (max-width: 380px) {
+
+    /* Even smaller screens */
+    #p-grid {
+        width: 260px !important;
+        height: 260px !important;
+    }
+
+    .vinyl-core {
+        width: 80vw;
+        height: 80vw;
+        max-width: 250px;
+        max-height: 250px;
+    }
+
+    .count-unit {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* Slightly reduce the attractive/section titles */
+    .section-title-lux {
+        font-size: 3rem;
+        /* Reduced from 5rem to fit mobile */
+    }
+
+    /* CENTER EVERYTHING ON MOBILE */
+    section,
+    .content-box {
+        text-align: center !important;
+        align-items: center !important;
+        justify-content: center !important;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Specific fixes for elements that might resist centering */
+    .asym-grid,
+    .reverse-grid {
+        align-items: center !important;
+        justify-items: center !important;
+    }
+
+    /* REDUCE PADDING AND SCALE FOR STORY/ABOUT SECTION */
+    #story-sec .content-box {
+        padding: 0 10px;
+    }
+
+    #story-sec .hero-visual-wrap {
+        height: 40vh !important;
+        /* Smaller image height */
+        margin-bottom: 20px;
+    }
+
+    #story-sec h2 {
+        font-size: 3.5rem !important;
+        /* Reduce "Heart of a Star" title */
+    }
+
+    /* REDUCE TIMELINE SIZE */
+    .tl-content {
+        padding: 25px !important;
+        /* Smaller padding inside cards */
+    }
+
+    .tl-img-wrap {
+        height: 180px !important;
+        /* Smaller images in timeline */
+    }
+
+    .timeline-item {
+        margin-bottom: 40px !important;
+        /* Closer together */
+        max-width: 85% !important;
+        /* Constrain horizontal width so it doesn't touch edges */
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    /* Constrain Story Section Horizontal Width */
+    #story-sec .content-box {
+        max-width: 90% !important;
+        margin: 0 auto !important;
+    }
+}
