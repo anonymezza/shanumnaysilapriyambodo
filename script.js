@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initFloatingTraits();
   initTextAnimations();
   initPortalMagnetic();
+  initMobileMenu();
 
 
   function initPortalMagnetic() {
@@ -717,5 +718,48 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     document.getElementById("p-sv").onclick = () => build();
     build();
+  }
+  function initMobileMenu() {
+    const hamburger = document.getElementById("hamburger-btn");
+    const navSide = document.getElementById("nav-side");
+    const navBtns = document.querySelectorAll(".nav-btn");
+
+    if (!hamburger || !navSide) return;
+
+    // Toggle Menu
+    hamburger.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent closing immediately
+      navSide.classList.toggle("active");
+
+      // Animate hamburger icon change
+      const icon = hamburger.querySelector("i");
+      if (navSide.classList.contains("active")) {
+        gsap.to(icon, { rotation: 90, duration: 0.3 });
+        icon.className = "fas fa-times";
+      } else {
+        gsap.to(icon, { rotation: 0, duration: 0.3 });
+        icon.className = "fas fa-bars";
+      }
+    });
+
+    // Close when clicking a link
+    navBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        navSide.classList.remove("active");
+        const icon = hamburger.querySelector("i");
+        icon.className = "fas fa-bars";
+        gsap.to(icon, { rotation: 0, duration: 0.3 });
+      });
+    });
+
+    // Close when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!navSide.contains(e.target) && !hamburger.contains(e.target) && navSide.classList.contains("active")) {
+        navSide.classList.remove("active");
+        const icon = hamburger.querySelector("i");
+        icon.className = "fas fa-bars";
+        gsap.to(icon, { rotation: 0, duration: 0.3 });
+      }
+    });
   }
 });
