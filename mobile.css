@@ -5,7 +5,6 @@
 
 @media (max-width: 900px) {
 
-    /* STACK THE GRID EARLIER FOR TABLETS */
     .asym-grid,
     .reverse-grid {
         grid-template-columns: 1fr !important;
@@ -18,19 +17,15 @@
         margin-bottom: 20px;
     }
 
-    /* Adjust padding for sections */
     section {
         padding: 8vh 5vw;
         padding-right: 5vw;
-        /* Reset sidebar padding */
     }
 
     .nav-side {
         display: none;
-        /* Hide side nav on mobile/tablet */
     }
 
-    /* VINYL SECTION STACK */
     .studio-box {
         flex-direction: column;
         gap: 40px;
@@ -43,11 +38,9 @@
 
     .vinyl-needle {
         left: 200px;
-        /* Adjust needle pos for smaller vinyl */
         height: 140px;
     }
 
-    /* TIMELINE */
     .timeline-line {
         left: 20px;
         transform: none;
@@ -55,225 +48,165 @@
 
     .timeline-item {
         width: 100%;
-        margin-left: 40px !important;
-        /* Force all to right of line */
+        margin-left: 0 !important;
         margin-right: 0;
         margin-bottom: 60px;
-    }
-
-    .timeline-item.left {
-        align-self: flex-start;
+        max-width: 100%;
     }
 
     .timeline-item::before {
-        /* Dot on the timeline */
-        content: '';
-        position: absolute;
-        left: -46px;
-        /* Align with line */
-        top: 20px;
-        width: 10px;
-        height: 10px;
-        background: var(--color-accent);
-        border-radius: 50%;
-        box-shadow: 0 0 10px var(--color-accent);
+        display: none;
+        /* Hide dots to save space on mobile */
     }
 }
 
 @media (max-width: 600px) {
-
-    /* HERO TITLE SCALING */
     .hero-title-giant {
-        font-size: 15vw;
-        /* Make it responsive to width */
+        font-size: clamp(1.5rem, 12vw, 4rem);
         line-height: 1.1;
         margin-bottom: 20px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 
     .hero-sub-text {
-        font-size: 1rem;
-        padding: 0 10px;
-        line-height: 1.5;
+        font-size: 0.95rem;
+        padding: 0 15px;
+        line-height: 1.6;
     }
 
-    /* HIDE/ADJUST FLOATING TRAITS */
     .f-word {
-        font-size: calc(1.5rem * var(--s));
-        /* Scale down trait words */
-        opacity: 0.1;
-        /* Fade them more so they don't distract */
+        font-size: calc(1rem * var(--s));
+        opacity: 0.08;
     }
 
-    /* PORTAL LOGO on Mobile */
     .portal-logo {
-        width: 130px;
-        height: 130px;
-    }
-
-    .portal-circle {
-        width: 60px;
-        height: 60px;
-        font-size: 1rem;
-    }
-
-    .portal-svg-text {
-        font-size: 8.5px;
-        /* Slightly larger relative text for readability */
-    }
-
-    /* GALLERY ORBIT PREVIEW MOBILE */
-    .ring-engine-wrap {
-        width: 300px;
-        height: 300px;
-    }
-
-    .ring-card-item {
-        border-radius: 8px;
-    }
-
-    /* LIGHTBOX MOBILE */
-    .lb-content {
-        max-width: 95vw;
-        max-height: 70vh;
-    }
-
-    .lb-caption-box h3 {
-        font-size: 1.8rem;
-    }
-
-    .lb-caption-box p {
-        font-size: 0.7rem;
-    }
-
-    .lb-close {
-        top: -60px;
-        right: calc(50% - 25px);
-        /* Center close button on top */
-        width: 50px;
-        height: 50px;
-    }
-
-    /* COUNTDOWN */
-    .countdown-flex {
-        gap: 15px;
-    }
-
-    .count-unit {
-        font-size: 2.5rem;
-    }
-
-    .unit-label {
-        font-size: 0.6rem;
-    }
-
-    /* HORIZONTAL SCROLL SECTION FORCE VERTICAL ON MOBILE */
-    .horizontal-scroll-container,
-    .h-scroll-wrapper,
-    .h-scroll-panel {
-        display: block !important;
-        width: 100% !important;
-        height: auto !important;
-        overflow: visible !important;
-    }
-
-    .h-scroll-panel {
-        padding: 60px 20px;
-    }
-
-    .h-panel-inner {
-        height: 50vh;
-    }
-
-    .back-btn {
-        top: 20px;
-        left: 20px;
-        padding: 8px 18px;
-        font-size: 0.8rem;
-    }
-}
-
-@media (max-width: 380px) {
-
-    /* SMALLER PHONES (iPhone SE, Mini) */
-    .hero-title-giant {
-        font-size: 14vw;
-    }
-
-    .vinyl-core {
-        width: 250px;
-        height: 250px;
-    }
-
-    .vinyl-needle {
-        left: 170px;
+        width: 120px;
         height: 120px;
     }
 
-    section {
-        padding: 10vh 20px;
+    .portal-circle {
+        width: 55px;
+        height: 55px;
+        font-size: 0.9rem;
+    }
+
+    .portal-svg-text {
+        font-size: 8px;
+    }
+
+    .ring-engine-wrap {
+        width: 260px;
+        height: 260px;
+    }
+
+    .lb-content {
+        max-width: 95vw;
+        max-height: 60vh;
+    }
+
+    .lb-caption-box h3 {
+        font-size: 1.5rem;
+    }
+
+    .lb-close {
+        top: -55px;
+        right: calc(50% - 22px);
+        width: 45px;
+        height: 45px;
+    }
+
+    .countdown-flex {
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .count-unit {
+        font-size: 2rem;
+    }
+
+    .unit-label {
+        font-size: 0.5rem;
+    }
+
+    #p-grid {
+        width: 280px !important;
+        height: 280px !important;
+        padding: 10px !important;
     }
 }
 
-/* --- GALLERY DOME MOBILE (gallery.html) --- */
+@media (max-width: 400px) {
+    .hero-title-giant {
+        font-size: 11vw;
+    }
+
+    .vinyl-core {
+        width: 220px;
+        height: 220px;
+    }
+
+    .vinyl-needle {
+        left: 140px;
+        height: 100px;
+    }
+
+    .section-title-lux {
+        font-size: 2.2rem !important;
+    }
+
+    .tl-content {
+        padding: 15px !important;
+    }
+
+    .tl-img-wrap {
+        height: 140px !important;
+    }
+}
+
+/* --- GALLERY DOME MOBILE --- */
 @media (max-width: 768px) {
     .dome-card {
-        width: 220px !important;
-        height: 300px !important;
+        width: clamp(145px, 44vw, 230px) !important;
+        height: clamp(210px, 60vw, 320px) !important;
     }
 
     .back-nav {
         top: 15px;
         left: 15px;
         padding: 8px 16px;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
     }
 
     .hint {
-        bottom: 80px;
-        /* Move up to avoid bottom bars */
+        bottom: 20px;
         width: 90%;
         text-align: center;
-        opacity: 0.8;
-        /* More visible on small screens */
-    }
-
-    /* Lightbox on Gallery Mobile */
-    .lb-content {
-        max-width: 95vw;
-    }
-
-    .lb-close {
-        top: -50px;
-        right: 0;
+        font-size: 10px !important;
+        letter-spacing: 2px !important;
     }
 }
 
-/* --- HAMBURGER MENU & MOBILE NAV --- */
+/* --- HAMBURGER & MOBILE NAV --- */
 .hamburger-menu {
     display: none;
-    /* Hidden on desktop */
     position: fixed;
     top: 20px;
     left: 20px;
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     background: var(--color-surface);
     backdrop-filter: blur(10px);
     border: 1px solid var(--color-glass-border);
     border-radius: 50%;
     color: var(--color-accent);
-    font-size: 1.5rem;
-    z-index: 3000;
+    font-size: 1.2rem;
+    z-index: 5001;
+    /* Above music btn */
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: 0.3s ease;
-}
-
-.hamburger-menu:hover {
-    background: var(--color-accent);
-    color: #000;
-    transform: scale(1.1);
 }
 
 @media (max-width: 768px) {
@@ -281,101 +214,32 @@
         display: flex;
     }
 
-    /* Redefine Nav Side for Mobile as a Drawer */
     .nav-side {
         display: flex !important;
-        /* Force show, overriding hidden */
         position: fixed;
         top: 0;
         left: 0;
         bottom: 0;
-        right: auto;
-        /* Not on right side */
-        width: 80px;
-        /* Slim vertical dock */
-        height: 100vh;
-        transform: translateX(-150%);
-        /* Start hidden */
+        width: 70px;
+        transform: translateX(-100%);
         flex-direction: column;
         justify-content: center;
-        background: rgba(10, 10, 10, 0.95);
+        background: rgba(10, 10, 10, 0.98);
         border-right: 1px solid var(--color-glass-border);
-        border-radius: 0 20px 20px 0;
-        padding: 40px 0;
         transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
-        z-index: 2999;
+        z-index: 5000;
+        padding: 20px 0;
     }
 
     .nav-side.active {
         transform: translateX(0);
-        /* Slide in */
     }
 
     .nav-btn {
-        width: 50px;
-        height: 50px;
-        font-size: 1.2rem;
-        margin: 15px auto;
-    }
-}
-
-/* --- OVERFLOW & PUZZLE FIXES (Mobile) --- */
-html,
-body {
-    overflow-x: hidden;
-    width: 100%;
-}
-
-@media (max-width: 600px) {
-
-    /* Puzzle Sizing */
-    #p-grid {
-        width: 320px !important;
-        height: 320px !important;
-        gap: 5px !important;
-        padding: 10px !important;
-    }
-
-    /* Prevent overflow on sections */
-    section {
-        max-width: 100vw;
-        overflow-x: hidden;
-    }
-
-    /* Scale down giant text */
-    .parallax-giant-text {
-        font-size: 15vw;
-        /* Smaller than 20vw */
-        opacity: 0.05;
-    }
-}
-
-@media (max-width: 380px) {
-
-    /* Even smaller screens */
-    #p-grid {
-        width: 260px !important;
-        height: 260px !important;
-    }
-
-    .vinyl-core {
-        width: 80vw;
-        height: 80vw;
-        max-width: 250px;
-        max-height: 250px;
-    }
-
-    .count-unit {
-        font-size: 2rem;
-    }
-}
-
-@media (max-width: 768px) {
-
-    /* Slightly reduce the attractive/section titles */
-    .section-title-lux {
-        font-size: 3rem;
-        /* Reduced from 5rem to fit mobile */
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        margin: 10px auto;
     }
 
     /* CENTER EVERYTHING ON MOBILE */
@@ -386,54 +250,47 @@ body {
         justify-content: center !important;
         display: flex;
         flex-direction: column;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
     }
 
-    /* Specific fixes for elements that might resist centering */
     .asym-grid,
     .reverse-grid {
-        align-items: center !important;
-        justify-items: center !important;
-    }
-
-    /* REDUCE PADDING AND SCALE FOR STORY/ABOUT SECTION */
-    #story-sec .content-box {
-        padding: 0 10px;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
     }
 
     #story-sec .hero-visual-wrap {
-        height: 40vh !important;
-        /* Smaller image height */
-        margin-bottom: 20px;
+        width: 100% !important;
+        height: 35vh !important;
     }
+}
 
-    #story-sec h2 {
-        font-size: 3.5rem !important;
-        /* Reduce "Heart of a Star" title */
-    }
+/* Global Viewport Settings */
+html,
+body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+    -webkit-text-size-adjust: 100%;
+}
 
-    /* REDUCE TIMELINE SIZE */
-    .tl-content {
-        padding: 25px !important;
-        /* Smaller padding inside cards */
-    }
+* {
+    box-sizing: border-box;
+}
 
-    .tl-img-wrap {
-        height: 180px !important;
-        /* Smaller images in timeline */
-    }
+section {
+    width: 100%;
+    max-width: 100vw;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 60px 15px;
+}
 
-    .timeline-item {
-        margin-bottom: 40px !important;
-        /* Closer together */
-        max-width: 85% !important;
-        /* Constrain horizontal width so it doesn't touch edges */
-        margin-left: auto !important;
-        margin-right: auto !important;
-    }
-
-    /* Constrain Story Section Horizontal Width */
-    #story-sec .content-box {
-        max-width: 90% !important;
-        margin: 0 auto !important;
-    }
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }

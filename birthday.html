@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Shanum</title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="favicon-birthday/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-birthday/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-birthday/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon-birthday/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="birthday-flowers.css">
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            overflow-x: hidden;
+            font-family: 'Outfit', sans-serif;
+            color: #fff;
+            scroll-behavior: smooth;
+        }
+
+        /* SECTION 1: GARDEN */
+        #garden-view {
+            height: 100vh;
+            width: 100%;
+            position: relative;
+            background: radial-gradient(circle at center, #080808 0%, #000 100%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            overflow: hidden;
+            mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+            perspective: 1000px;
+        }
+
+        .night-bg {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100%;
+            filter: blur(0.1vmin);
+            background-image:
+                radial-gradient(ellipse at top, transparent 0%, #000),
+                radial-gradient(ellipse at bottom, #000, rgba(145, 233, 255, 0.15)),
+                repeating-linear-gradient(220deg, #000 0px, #000 19px, transparent 19px, transparent 22px),
+                repeating-linear-gradient(189deg, #000 0px, #000 19px, transparent 19px, transparent 22px),
+                repeating-linear-gradient(148deg, #000 0px, #000 19px, transparent 19px, transparent 22px),
+                linear-gradient(90deg, rgb(0, 255, 250), rgb(240, 240, 240));
+        }
+
+
+        /* PARALLAX LAYERS */
+        .parallax-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .parallax-stars .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .parallax-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .parallax-particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+            filter: blur(1px);
+        }
+
+        /* HERO TITLE OVERLAY */
+        .garden-hero {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .garden-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 8vw, 6rem);
+            color: #D4AF37;
+            text-shadow: 0 0 60px rgba(212, 175, 55, 0.4), 0 0 120px rgba(212, 175, 55, 0.15);
+            margin: 0;
+            opacity: 0;
+            letter-spacing: 4px;
+            width: 100%;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .garden-hero .hero-sub {
+            font-size: clamp(0.7rem, 2vw, 1.1rem);
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-top: 20px;
+            opacity: 0;
+        }
+
+        .garden-hero .hero-date {
+            font-size: clamp(0.6rem, 1.5vw, 0.9rem);
+            color: rgba(212, 175, 55, 0.4);
+            letter-spacing: 12px;
+            margin-top: 15px;
+            opacity: 0;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            letter-spacing: 6px;
+            font-size: 0.85rem;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .scroll-hint p {
+            margin: 0;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateX(-50%) translateY(0)
+            }
+
+            40% {
+                transform: translateX(-50%) translateY(-15px)
+            }
+
+            60% {
+                transform: translateX(-50%) translateY(-7px)
+            }
+        }
+
+        /* SECTION: QUOTE TRANSITION */
+        #quote-section {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .quote-content {
+            text-align: center;
+            max-width: 700px;
+            padding: 0 30px;
+        }
+
+        .quote-line {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 3.5vw, 3rem);
+            color: rgba(255, 255, 255, 0.85);
+            font-style: italic;
+            line-height: 1.6;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .quote-author {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: rgba(212, 175, 55, 0.6);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .quote-divider {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.5), transparent);
+            margin: 40px auto;
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        /* SECTION 2: LETTER */
+        #letter-view {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15vh 20px;
+            position: relative;
+            background: #000;
+        }
+
+        .letter-card {
+            max-width: 850px;
+            padding: clamp(40px, 8vw, 80px) clamp(30px, 6vw, 60px);
+            text-align: center;
+        }
+
+        .letter-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 5.5rem);
+            color: var(--color-accent);
+            margin-bottom: 50px;
+            line-height: 1;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .letter-para {
+            font-size: clamp(0.95rem, 3.5vw, 1.25rem);
+            line-height: 2;
+            color: rgba(255, 255, 255, 0.65);
+            text-align: justify;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .letter-para:last-of-type {
+            margin-bottom: 60px;
+        }
+
+        .letter-btn-wrap {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .back-world-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: var(--color-accent);
+            border: 1px solid var(--color-accent);
+            padding: 20px 60px;
+            border-radius: 100px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .back-world-btn:hover {
+            background: var(--color-accent);
+            color: #000;
+            box-shadow: 0 0 60px rgba(212, 175, 55, 0.3);
+            transform: translateY(-8px) scale(1.05);
+        }
+
+        /* MUSIC PLAYER */
+        .music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #D4AF37;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            background: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .music-control i {
+            font-size: 1.2rem;
+        }
+
+        .music-control.playing i::before {
+            content: "\f04c";
+            /* pause */
+        }
+
+        .music-control.paused i::before {
+            content: "\f04b";
+            /* play */
+            margin-left: 3px;
+        }
+
+        /* OPTIMIZATIONS */
+        #garden-view,
+        #quote-section,
+        #letter-view {
+            content-visibility: auto;
+            contain-intrinsic-size: 100vh;
+        }
+
+        .flower,
+        .star,
+        .parallax-particle,
+        .night-bg {
+            will-change: transform, opacity;
+        }
+
+        @media (max-width: 768px) {
+            #codepen-flowers {
+                transform: scale(0.6) translateY(5vh);
+            }
+
+            .flower__light {
+                display: none;
+                /* Hide expensive small lights on mobile */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- BACKGROUND MUSIC -->
+    <audio id="bg-music" loop>
+        <source src="Assets/music/Perunggu  Ini Abadi.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- MUSIC CONTROL -->
+    <div id="music-btn" class="music-control paused">
+        <i class="fas fa-play"></i>
+    </div>
+
+    <!-- SECTION 1: GARDEN -->
+    <section id="garden-view">
+        <div class="night-bg"></div>
+
+        <!-- PARALLAX LAYERS -->
+        <div class="parallax-stars" id="stars-layer"></div>
+        <div class="parallax-particles" id="particles-layer"></div>
+
+        <!-- HERO TITLE -->
+        <div class="garden-hero" id="garden-hero">
+            <h1>Happy Birthday</h1>
+            <p class="hero-sub">Shanum Naysila</p>
+            <p class="hero-date"><span id="hero-age"></span></p>
+        </div>
+
+        <!-- CENTERPIECE: CodePen/GitHub CSS Flower -->
+        <div class="flowers" id="codepen-flowers">
+            <div class="flower flower--1">
+                <div class="flower__leafs flower__leafs--1">
+                    <div class="flower__leaf flower__leaf--1"></div>
+                    <div class="flower__leaf flower__leaf--2"></div>
+                    <div class="flower__leaf flower__leaf--3"></div>
+                    <div class="flower__leaf flower__leaf--4"></div>
+                    <div class="flower__white-circle"></div>
+                    <div class="flower__light flower__light--1"></div>
+                    <div class="flower__light flower__light--2"></div>
+                    <div class="flower__light flower__light--3"></div>
+                    <div class="flower__light flower__light--4"></div>
+                    <div class="flower__light flower__light--5"></div>
+                    <div class="flower__light flower__light--6"></div>
+                    <div class="flower__light flower__light--7"></div>
+                    <div class="flower__light flower__light--8"></div>
+                </div>
+                <div class="flower__line">
+                    <div class="flower__line__leaf flower__line__leaf--1"></div>
+                    <div class="flower__line__leaf flower__line__leaf--2"></div>
+                    <div class="flower__line__leaf flower__line__leaf--3"></div>
+                    <div class="flower__line__leaf flower__line__leaf--4"></div>
+                    <div class="flower__line__leaf flower__line__leaf--5"></div>
+                    <div class="flower__line__leaf flower__line__leaf--6"></div>
+                </div>
+            </div>
+
+            <div class="flower flower--2">
+                <div class="flower__leafs flower__leafs--2">
+                    <div class="flower__leaf flower__leaf--1"></div>
+                    <div class="flower__leaf flower__leaf--2"></div>
+                    <div class="flower__leaf flower__leaf--3"></div>
+                    <div class="flower__leaf flower__leaf--4"></div>
+                    <div class="flower__white-circle"></div>
+                    <div class="flower__light flower__light--1"></div>
+                    <div class="flower__light flower__light--2"></div>
+                    <div class="flower__light flower__light--3"></div>
+                    <div class="flower__light flower__light--4"></div>
+                    <div class="flower__light flower__light--5"></div>
+                    <div class="flower__light flower__light--6"></div>
+                    <div class="flower__light flower__light--7"></div>
+                    <div class="flower__light flower__light--8"></div>
+                </div>
+                <div class="flower__line">
+                    <div class="flower__line__leaf flower__line__leaf--1"></div>
+                    <div class="flower__line__leaf flower__line__leaf--2"></div>
+                    <div class="flower__line__leaf flower__line__leaf--3"></div>
+                    <div class="flower__line__leaf flower__line__leaf--4"></div>
+                </div>
+            </div>
+
+            <div class="flower flower--3">
+                <div class="flower__leafs flower__leafs--3">
+                    <div class="flower__leaf flower__leaf--1"></div>
+                    <div class="flower__leaf flower__leaf--2"></div>
+                    <div class="flower__leaf flower__leaf--3"></div>
+                    <div class="flower__leaf flower__leaf--4"></div>
+                    <div class="flower__white-circle"></div>
+                    <div class="flower__light flower__light--1"></div>
+                    <div class="flower__light flower__light--2"></div>
+                    <div class="flower__light flower__light--3"></div>
+                    <div class="flower__light flower__light--4"></div>
+                    <div class="flower__light flower__light--5"></div>
+                    <div class="flower__light flower__light--6"></div>
+                    <div class="flower__light flower__light--7"></div>
+                    <div class="flower__light flower__light--8"></div>
+                </div>
+                <div class="flower__line">
+                    <div class="flower__line__leaf flower__line__leaf--1"></div>
+                    <div class="flower__line__leaf flower__line__leaf--2"></div>
+                    <div class="flower__line__leaf flower__line__leaf--3"></div>
+                    <div class="flower__line__leaf flower__line__leaf--4"></div>
+                </div>
+            </div>
+
+            <div class="grow-ans" style="--d:1.2s">
+                <div class="flower__g-long">
+                    <div class="flower__g-long__top"></div>
+                    <div class="flower__g-long__bottom"></div>
+                </div>
+            </div>
+
+            <div class="growing-grass">
+                <div class="flower__grass flower__grass--1">
+                    <div class="flower__grass--top"></div>
+                    <div class="flower__grass--bottom"></div>
+                    <div class="flower__grass__leaf flower__grass__leaf--1"></div>
+                    <div class="flower__grass__leaf flower__grass__leaf--2"></div>
+                    <div class="flower__grass__leaf flower__grass__leaf--3"></div>
+                    <div class="flower__grass__leaf flower__grass__leaf--4"></div>
+                    <div class="flower__grass__leaf flower__grass__leaf--5"></div>
+                    <div class="flower__grass__leaf flower__grass__leaf--6"></div>
+                    <div class="flower__grass__leaf flower__grass__leaf--7"></div>
+                    <div class="flower__grass__leaf flower__grass__leaf--8"></div>
+                    <div class="flower__grass__overlay"></div>
+                </div>
+            </div>
+
+            <div class="growing-grass">
+                <div class="flower__grass flower__grass--2">
+                    <div class="flower__grass--top"></div>
+                    <div class="flower__grass--bottom"></div>
+                    <div class="flower__grass__leaf flower__grass__leaf--1"></div>
+                    <div class="flower__grass__leaf flower__grass__leaf--2"></div>
+                    <div class="flower__grass__leaf flower__grass__leaf--3"></div>
+                    <div class="flower__grass__leaf flower__grass__leaf--4"></div>
+                    <div class="flower__grass__leaf flower__grass__leaf--5"></div>
+                    <div class="flower__grass__leaf flower__grass__leaf--6"></div>
+                    <div class="flower__grass__leaf flower__grass__leaf--7"></div>
+                    <div class="flower__grass__leaf flower__grass__leaf--8"></div>
+                    <div class="flower__grass__overlay"></div>
+                </div>
+            </div>
+
+            <div class="grow-ans" style="--d:2.4s">
+                <div class="flower__g-right flower__g-right--1">
+                    <div class="leaf"></div>
+                </div>
+            </div>
+            <div class="grow-ans" style="--d:2.8s">
+                <div class="flower__g-right flower__g-right--2">
+                    <div class="leaf"></div>
+                </div>
+            </div>
+
+            <div class="grow-ans" style="--d:2.8s">
+                <div class="flower__g-front">
+                    <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--1">
+                        <div class="flower__g-front__leaf"></div>
+                    </div>
+                    <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--2">
+                        <div class="flower__g-front__leaf"></div>
+                    </div>
+                    <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--3">
+                        <div class="flower__g-front__leaf"></div>
+                    </div>
+                    <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--4">
+                        <div class="flower__g-front__leaf"></div>
+                    </div>
+                    <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--5">
+                        <div class="flower__g-front__leaf"></div>
+                    </div>
+                    <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--6">
+                        <div class="flower__g-front__leaf"></div>
+                    </div>
+                    <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--7">
+                        <div class="flower__g-front__leaf"></div>
+                    </div>
+                    <div class="flower__g-front__leaf-wrapper flower__g-front__leaf-wrapper--8">
+                        <div class="flower__g-front__leaf"></div>
+                    </div>
+                    <div class="flower__g-front__line"></div>
+                </div>
+            </div>
+
+            <div class="grow-ans" style="--d:3.2s">
+                <div class="flower__g-fr">
+                    <div class="leaf"></div>
+                    <div class="flower__g-fr__leaf flower__g-fr__leaf--1"></div>
+                    <div class="flower__g-fr__leaf flower__g-fr__leaf--2"></div>
+                    <div class="flower__g-fr__leaf flower__g-fr__leaf--3"></div>
+                    <div class="flower__g-fr__leaf flower__g-fr__leaf--4"></div>
+                    <div class="flower__g-fr__leaf flower__g-fr__leaf--5"></div>
+                    <div class="flower__g-fr__leaf flower__g-fr__leaf--6"></div>
+                    <div class="flower__g-fr__leaf flower__g-fr__leaf--7"></div>
+                    <div class="flower__g-fr__leaf flower__g-fr__leaf--8"></div>
+                </div>
+            </div>
+
+            <div class="long-g long-g--0">
+                <div class="grow-ans" style="--d:3s">
+                    <div class="leaf leaf--0"></div>
+                </div>
+                <div class="grow-ans" style="--d:2.2s">
+                    <div class="leaf leaf--1"></div>
+                </div>
+                <div class="grow-ans" style="--d:3.4s">
+                    <div class="leaf leaf--2"></div>
+                </div>
+                <div class="grow-ans" style="--d:3.6s">
+                    <div class="leaf leaf--3"></div>
+                </div>
+            </div>
+            <div class="long-g long-g--1">
+                <div class="grow-ans" style="--d:3.6s">
+                    <div class="leaf leaf--0"></div>
+                </div>
+                <div class="grow-ans" style="--d:3.8s">
+                    <div class="leaf leaf--1"></div>
+                </div>
+                <div class="grow-ans" style="--d:4s">
+                    <div class="leaf leaf--2"></div>
+                </div>
+                <div class="grow-ans" style="--d:4.2s">
+                    <div class="leaf leaf--3"></div>
+                </div>
+            </div>
+            <div class="long-g long-g--2">
+                <div class="grow-ans" style="--d:4s">
+                    <div class="leaf leaf--0"></div>
+                </div>
+                <div class="grow-ans" style="--d:4.2s">
+                    <div class="leaf leaf--1"></div>
+                </div>
+                <div class="grow-ans" style="--d:4.4s">
+                    <div class="leaf leaf--2"></div>
+                </div>
+                <div class="grow-ans" style="--d:4.6s">
+                    <div class="leaf leaf--3"></div>
+                </div>
+            </div>
+            <div class="long-g long-g--3">
+                <div class="grow-ans" style="--d:4s">
+                    <div class="leaf leaf--0"></div>
+                </div>
+                <div class="grow-ans" style="--d:4.2s">
+                    <div class="leaf leaf--1"></div>
+                </div>
+                <div class="grow-ans" style="--d:3s">
+                    <div class="leaf leaf--2"></div>
+                </div>
+                <div class="grow-ans" style="--d:3.6s">
+                    <div class="leaf leaf--3"></div>
+                </div>
+            </div>
+            <div class="long-g long-g--4">
+                <div class="grow-ans" style="--d:4s">
+                    <div class="leaf leaf--0"></div>
+                </div>
+                <div class="grow-ans" style="--d:4.2s">
+                    <div class="leaf leaf--1"></div>
+                </div>
+                <div class="grow-ans" style="--d:3s">
+                    <div class="leaf leaf--2"></div>
+                </div>
+                <div class="grow-ans" style="--d:3.6s">
+                    <div class="leaf leaf--3"></div>
+                </div>
+            </div>
+            <div class="long-g long-g--5">
+                <div class="grow-ans" style="--d:4s">
+                    <div class="leaf leaf--0"></div>
+                </div>
+                <div class="grow-ans" style="--d:4.2s">
+                    <div class="leaf leaf--1"></div>
+                </div>
+                <div class="grow-ans" style="--d:3s">
+                    <div class="leaf leaf--2"></div>
+                </div>
+                <div class="grow-ans" style="--d:3.6s">
+                    <div class="leaf leaf--3"></div>
+                </div>
+            </div>
+            <div class="long-g long-g--6">
+                <div class="grow-ans" style="--d:4.2s">
+                    <div class="leaf leaf--0"></div>
+                </div>
+                <div class="grow-ans" style="--d:4.4s">
+                    <div class="leaf leaf--1"></div>
+                </div>
+                <div class="grow-ans" style="--d:4.6s">
+                    <div class="leaf leaf--2"></div>
+                </div>
+                <div class="grow-ans" style="--d:4.8s">
+                    <div class="leaf leaf--3"></div>
+                </div>
+            </div>
+            <div class="long-g long-g--7">
+                <div class="grow-ans" style="--d:3s">
+                    <div class="leaf leaf--0"></div>
+                </div>
+                <div class="grow-ans" style="--d:3.2s">
+                    <div class="leaf leaf--1"></div>
+                </div>
+                <div class="grow-ans" style="--d:3.5s">
+                    <div class="leaf leaf--2"></div>
+                </div>
+                <div class="grow-ans" style="--d:3.6s">
+                    <div class="leaf leaf--3"></div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="scroll-hint">
+            <p>SCROLL DOWN</p>
+            <i class="fas fa-chevron-down" style="margin-top:10px"></i>
+        </div>
+    </section>
+
+    <!-- SECTION: QUOTE TRANSITION -->
+    <section id="quote-section">
+        <div class="quote-content">
+            <div class="quote-divider"></div>
+            <p class="quote-line">&ldquo;Setiap bunga mekar di waktunya sendiri, dan kamu telah mekar menjadi manusia
+                yang luar biasa indah.&rdquo;</p>
+            <p class="quote-author">&mdash; Untukmu, Shanum</p>
+            <div class="quote-divider"></div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: LETTER -->
+    <section id="letter-view">
+        <div class="letter-card" id="letter-card">
+            <h1 class="letter-title">Selamat Ulang Tahun, Shanum</h1>
+            <p class="letter-para">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+                velit esse cillum dolore eu fugiat nulla pariatur.</p>
+            <p class="letter-para">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+                doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+                architecto beatae vitae dicta sunt explicabo.</p>
+            <p class="letter-para">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
+                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui
+                dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
+            <p class="letter-para">Semoga di usia yang baru ini, setiap langkahmu dipenuhi cahaya, senyummu mekar
+                seindah bunga, dan keberanianmu tumbuh setinggi langit. Selamat ulang tahun, Shanum. Dunia jauh lebih
+                indah karena ada kamu.</p>
+            <div class="letter-btn-wrap">
+                <a href="index.html?finished=true" class="back-world-btn">Return to World</a>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        window.onload = () => {
+            initMusic();
+            createStars();
+            createParticles();
+            initEntrance();
+            initParallaxScroll();
+            initQuoteSection();
+            initLetterSection();
+            initMouse();
+            initAgeDisplay();
+        };
+
+        // ===== MUSIC PLAYER LOGIC =====
+        function initMusic() {
+            const music = document.getElementById('bg-music');
+            const musicBtn = document.getElementById('music-btn');
+            if (!music || !musicBtn) return;
+
+            function updateUI() {
+                if (!musicBtn) return;
+                if (music.paused) {
+                    musicBtn.classList.add('paused');
+                    musicBtn.classList.remove('playing');
+                } else {
+                    musicBtn.classList.add('playing');
+                    musicBtn.classList.remove('paused');
+                }
+            }
+
+            const tryPlay = () => {
+                if (localStorage.getItem('musicPlaying') !== 'false') {
+                    music.play().then(() => {
+                        updateUI();
+                        localStorage.setItem('musicPlaying', 'true');
+                    }).catch(() => {
+                        updateUI();
+                    });
+                }
+            };
+
+            // Force start music on every entrance
+            tryPlay();
+
+            // Interaction Fallback
+            const interactions = ['click', 'touchstart', 'scroll', 'keydown', 'mousemove'];
+            const onFirstInteraction = () => {
+                if (music.paused && localStorage.getItem('musicPlaying') !== 'false') {
+                    tryPlay();
+                }
+                interactions.forEach(ev => document.removeEventListener(ev, onFirstInteraction));
+            };
+            interactions.forEach(ev => document.addEventListener(ev, onFirstInteraction, { once: true }));
+
+            musicBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (music.paused) {
+                    music.play().then(updateUI);
+                    localStorage.setItem('musicPlaying', 'true');
+                } else {
+                    music.pause();
+                    localStorage.setItem('musicPlaying', 'false');
+                    updateUI();
+                }
+            });
+
+            music.onplay = updateUI;
+            music.onpause = updateUI;
+        }
+
+        // ===== CREATE STAR FIELD =====
+        function createStars() {
+            const layer = document.getElementById('stars-layer');
+            const isMobile = window.innerWidth < 768;
+            const starCount = isMobile ? 50 : 120; // Reduced for mobile performance
+
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * (isMobile ? 1.5 : 2.5) + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                layer.appendChild(star);
+
+                gsap.to(star, {
+                    opacity: Math.random() * 0.8 + 0.2,
+                    duration: Math.random() * 2 + 1,
+                    delay: Math.random() * 3,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: 'sine.inOut',
+                    force3D: true // Optimization
+                });
+            }
+        }
+
+        // ===== CREATE FLOATING PARTICLES =====
+        function createParticles() {
+            const layer = document.getElementById('particles-layer');
+            const isMobile = window.innerWidth < 768;
+            const particleCount = isMobile ? 15 : 30; // Reduced for mobile
+            const colors = ['rgba(212,175,55,0.4)', 'rgba(255,215,0,0.3)', 'rgba(255,255,255,0.15)'];
+
+            for (let i = 0; i < particleCount; i++) {
+                const p = document.createElement('div');
+                p.className = 'parallax-particle';
+                const size = Math.random() * 6 + 2;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.left = Math.random() * 100 + '%';
+                p.style.top = Math.random() * 100 + '%';
+                layer.appendChild(p);
+
+                gsap.to(p, {
+                    opacity: Math.random() * 0.6 + 0.2,
+                    y: -100 - Math.random() * 200,
+                    x: (Math.random() - 0.5) * 150,
+                    duration: Math.random() * 10 + 8,
+                    delay: Math.random() * 5,
+                    repeat: -1,
+                    ease: 'none',
+                    force3D: true // Optimization
+                });
+            }
+        }
+
+        // ===== ENTRANCE ANIMATION =====
+        function initEntrance() {
+            // Set initial states for clean animation
+            gsap.set('.garden-hero h1', { opacity: 0, y: 30 });
+            gsap.set('.garden-hero .hero-sub', { opacity: 0, y: 20 });
+            gsap.set('.garden-hero .hero-date', { opacity: 0, y: 20 });
+            gsap.set('.scroll-hint', { opacity: 0, y: 30, xPercent: -50 });
+
+            const tl = gsap.timeline({ delay: 0.5 });
+
+            tl.to('.garden-hero h1', {
+                opacity: 1, y: 0, duration: 2, ease: 'expo.out'
+            })
+                .to('.garden-hero .hero-sub', {
+                    opacity: 1, y: 0, duration: 1.5, ease: 'expo.out'
+                }, '-=1.2')
+                .to('.garden-hero .hero-date', {
+                    opacity: 1, y: 0, duration: 1.5, ease: 'expo.out'
+                }, '-=1')
+                .to('.scroll-hint', {
+                    opacity: 0.4,
+                    y: 0,
+                    xPercent: -50,
+                    duration: 1,
+                    ease: 'power2.out',
+                    onComplete: () => {
+                        gsap.to('.scroll-hint', {
+                            y: -15,
+                            xPercent: -50,
+                            duration: 1.5,
+                            repeat: -1,
+                            yoyo: true,
+                            ease: 'sine.inOut'
+                        });
+                    }
+                }, '-=0.5');
+        }
+
+        // ===== PARALLAX SCROLL EFFECTS =====
+        function initParallaxScroll() {
+            // Garden section: flower zooms in + blurs as you scroll
+            gsap.to('#codepen-flowers', {
+                scrollTrigger: {
+                    trigger: '#garden-view',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: 1.5,
+                    onUpdate: (self) => {
+                        // Optimization: Disable expensive blur on mobile during scroll if heavy
+                        if (window.innerWidth < 768 && self.progress > 0.1) {
+                            gsap.set('#codepen-flowers', { filter: 'none' });
+                        }
+                    }
+                },
+                scale: 1.4,
+                y: -80,
+                // Only blur if not on mobile, or very subtley
+                filter: window.innerWidth < 768 ? 'blur(0px)' : 'blur(3px)',
+                ease: 'none',
+                force3D: true
+            });
+
+            // Hero title: parallax fade out on scroll
+            gsap.to('#garden-hero', {
+                scrollTrigger: {
+                    trigger: '#garden-view',
+                    start: 'top top',
+                    end: '40% top',
+                    scrub: 1
+                },
+                y: -200,
+                opacity: 0,
+                scale: 0.85,
+                ease: 'none'
+            });
+
+            // Stars layer: slower parallax
+            gsap.to('#stars-layer', {
+                scrollTrigger: {
+                    trigger: '#garden-view',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: 2
+                },
+                y: -100,
+                ease: 'none'
+            });
+
+            // Particles layer: medium parallax
+            gsap.to('#particles-layer', {
+                scrollTrigger: {
+                    trigger: '#garden-view',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: 1
+                },
+                y: -180,
+                ease: 'none'
+            });
+
+            // Night background: subtle zoom
+            gsap.to('.night-bg', {
+                scrollTrigger: {
+                    trigger: '#garden-view',
+                    start: 'top top',
+                    end: 'bottom top',
+                    scrub: 2
+                },
+                scale: 1.1,
+                ease: 'none'
+            });
+
+            // Scroll hint fades out
+            gsap.to('.scroll-hint', {
+                scrollTrigger: {
+                    trigger: '#garden-view',
+                    start: '5% top',
+                    end: '15% top',
+                    scrub: 1
+                },
+                opacity: 0,
+                ease: 'none'
+            });
+        }
+
+        // ===== QUOTE SECTION =====
+        function initQuoteSection() {
+            const quoteTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: '#quote-section',
+                    start: 'top 70%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+
+            quoteTl.to('.quote-divider', {
+                opacity: 1, scaleX: 1, duration: 1.2, ease: 'expo.out', stagger: 0.5
+            })
+                .to('.quote-line', {
+                    opacity: 1, y: 0, duration: 1.8, ease: 'expo.out'
+                }, '-=0.8')
+                .to('.quote-author', {
+                    opacity: 1, y: 0, duration: 1.2, ease: 'expo.out'
+                }, '-=1');
+        }
+
+        // ===== LETTER SECTION =====
+        function initLetterSection() {
+            // Card entrance
+            gsap.to('#letter-card', {
+                scrollTrigger: {
+                    trigger: '#letter-view',
+                    start: 'top 75%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1,
+                duration: 1.5,
+                ease: 'power2.out'
+            });
+
+            // Title
+            gsap.to('.letter-title', {
+                scrollTrigger: {
+                    trigger: '#letter-view',
+                    start: 'top 65%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1, y: 0, duration: 1.5, ease: 'expo.out'
+            });
+
+            // Paragraphs stagger
+            gsap.to('.letter-para', {
+                scrollTrigger: {
+                    trigger: '#letter-view',
+                    start: 'top 55%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1, y: 0, duration: 1.5, stagger: 0.3, ease: 'expo.out'
+            });
+
+            // Button
+            gsap.to('.letter-btn-wrap', {
+                scrollTrigger: {
+                    trigger: '.letter-btn-wrap',
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                },
+                opacity: 1, y: 0, duration: 1.2, ease: 'expo.out'
+            });
+        }
+
+        // ===== MOUSE INTERACTION =====
+        function initMouse() {
+            let lastMove = 0;
+            const throttle = 16; // ~60fps
+
+            window.addEventListener('mousemove', e => {
+                const now = Date.now();
+                if (now - lastMove < throttle) return;
+                lastMove = now;
+
+                const mx = (e.clientX / window.innerWidth) - 0.5;
+                const my = (e.clientY / window.innerHeight) - 0.5;
+
+                gsap.to('#codepen-flowers', {
+                    x: mx * 40,
+                    y: my * 15,
+                    rotateY: mx * 12,
+                    rotateX: my * -5,
+                    duration: 2,
+                    ease: 'power2.out',
+                    force3D: true
+                });
+
+                // Subtle parallax on stars
+                gsap.to('#stars-layer', {
+                    x: mx * -15,
+                    y: my * -10,
+                    duration: 3,
+                    ease: 'power2.out',
+                    force3D: true
+                });
+
+                // Particles react
+                gsap.to('#particles-layer', {
+                    x: mx * 25,
+                    y: my * 20,
+                    duration: 2.5,
+                    ease: 'power2.out',
+                    force3D: true
+                });
+            });
+        }
+
+        function initAgeDisplay() {
+            const birthDate = "2007-04-12";
+            const calculateAge = (birth) => {
+                const today = new Date();
+                const bDate = new Date(birth);
+                return today.getFullYear() - bDate.getFullYear();
+            };
+
+            const age = calculateAge(birthDate);
+            const el = document.getElementById('hero-age');
+            if (el) el.innerText = `${age} Years Old`;
+        }
+    </script>
+</body>
+
+</html>

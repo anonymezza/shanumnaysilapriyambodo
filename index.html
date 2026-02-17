@@ -13,7 +13,7 @@
   <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
   <link rel="manifest" href="manifest.json">
 
-  <link rel="stylesheet" href="shanum.css" />
+  <link rel="stylesheet" href="main.css" />
   <link rel="stylesheet" href="mobile.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
@@ -23,16 +23,22 @@
   <canvas id="cursor-canvas"
     style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1;"></canvas>
 
-  <!-- BIRTHDAY OVERLAY -->
-  <div id="bday-overlay"
-    style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:99999; display:none; background:var(--color-bg); flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-    <h1 style="font-family:'Playfair Display', serif; font-size:10vw; color:var(--color-accent); line-height:1.2;">
-      Shanum's Day</h1>
-    <p style="margin-top:20px; font-size:1.5rem; letter-spacing:10px; color:var(--color-accent);">12 APRIL</p>
-    <button onclick="document.getElementById('bday-overlay').style.display='none'"
-      style="margin-top:50px; background:none; border:2px solid var(--color-accent); color:var(--color-accent); padding:15px 40px; border-radius:100px; cursor:pointer; font-weight:700;">ENTER
-      HER WORLD</button>
+  <!-- BIRTHDAY OVERLAY (Persistent on April 12) -->
+  <div id="bday-overlay" class="bday-overlay-gate">
+    <div class="bday-gate-content">
+      <h1 class="bday-gate-title">It's Shanum's Day</h1>
+      <p class="bday-gate-date">12 APRIL</p>
+      <div class="bday-gate-hint">A world of magic awaits...</div>
+      <div class="bday-gate-actions">
+        <a href="birthday.html" class="bday-gate-btn">Enter Celebration</a>
+        <button onclick="document.getElementById('bday-overlay').style.display='none'" class="bday-gate-secondary">Close
+          Preview</button>
+      </div>
+    </div>
   </div>
+
+
+
 
 
 
@@ -93,7 +99,6 @@
           <div style="display: flex; justify-content: center; margin-top: 60px;">
             <div class="hero-floating-badge split-text" style="position: static; transform: none;">
               <i class="fas fa-sparkles" style="color: var(--color-accent);"></i>
-              <span style="font-size: 0.9rem; letter-spacing: 3px;">EST. 2007</span>
             </div>
           </div>
         </div>
@@ -305,7 +310,8 @@
             Counting to her brilliance</h2>
           <p
             style="color:var(--color-accent); letter-spacing:8px; text-transform:uppercase; font-size:0.9rem; font-weight:600;">
-            12 April 2007</p>
+            <span id="countdown-age"></span>
+          </p>
           <div class="countdown-flex">
             <div>
               <div class="count-unit" id="d-val">00</div>

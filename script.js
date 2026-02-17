@@ -17,6 +17,82 @@ document.addEventListener("DOMContentLoaded", () => {
   initTextAnimations();
   initPortalMagnetic();
   initMobileMenu();
+  initGlobalAudio();
+  initAgeDisplay();
+
+  function initGlobalAudio() {
+    const music = document.getElementById('bg-music');
+    const musicBtn = document.getElementById('music-btn');
+    if (!music || !musicBtn) return;
+
+    function updateUI() {
+      if (!musicBtn) return;
+      if (music.paused) {
+        musicBtn.classList.add('paused');
+        musicBtn.classList.remove('playing');
+      } else {
+        musicBtn.classList.add('playing');
+        musicBtn.classList.remove('paused');
+      }
+    }
+
+    const tryPlay = () => {
+      if (localStorage.getItem('musicPlaying') !== 'false') {
+        music.play().then(() => {
+          updateUI();
+          localStorage.setItem('musicPlaying', 'true');
+        }).catch(() => {
+          updateUI();
+        });
+      }
+    };
+
+    // Auto-try on start
+    tryPlay();
+
+    // Interaction Fallback
+    const interactions = ['click', 'touchstart', 'scroll', 'keydown', 'mousemove'];
+    const onFirstInteraction = () => {
+      if (music.paused && localStorage.getItem('musicPlaying') !== 'false') {
+        tryPlay();
+      }
+      interactions.forEach(ev => document.removeEventListener(ev, onFirstInteraction));
+    };
+    interactions.forEach(ev => document.addEventListener(ev, onFirstInteraction, { once: true }));
+
+    musicBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (music.paused) {
+        music.play().then(updateUI);
+        localStorage.setItem('musicPlaying', 'true');
+      } else {
+        music.pause();
+        localStorage.setItem('musicPlaying', 'false');
+        updateUI();
+      }
+    });
+
+    // Handle unexpected pause (e.g. system interruption)
+    music.onplay = updateUI;
+    music.onpause = updateUI;
+  }
+
+
+  function initAgeDisplay() {
+    const birthDate = "2007-04-12";
+    const calculateAge = (birth) => {
+      const today = new Date();
+      const bDate = new Date(birth);
+      return today.getFullYear() - bDate.getFullYear();
+    };
+
+    const age = calculateAge(birthDate);
+    const elements = ['index-age', 'hero-age', 'countdown-age'];
+    elements.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerText = `${age} Years Old`;
+    });
+  }
 
 
   function initPortalMagnetic() {
@@ -307,28 +383,100 @@ document.addEventListener("DOMContentLoaded", () => {
     const now = new Date();
     const d = now.getDate();
     const m = now.getMonth() + 1;
+
+    // Check for finished param
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasFinished = urlParams.get('finished');
+
     if (d === 12 && m === 4) {
-      document.getElementById("bday-overlay").style.display = "flex";
-      gsap.from("#bday-overlay h1", { opacity: 0, scale: 0.8, y: 50, duration: 1.5, ease: "power4.out" });
+      // Show persistent overlay on every refresh
+      const overlay = document.getElementById("bday-overlay");
+      if (overlay) {
+        overlay.style.display = "flex";
+        gsap.from(".bday-gate-content", {
+          opacity: 0,
+          scale: 0.8,
+          y: 50,
+          duration: 1.2,
+          ease: "power4.out"
+        });
+      }
+
+      // Start global particles
+      startGlobalCelebration();
+
+      // Update Countdown Section with Navigation Button (integrated look)
+      const timerSec = document.getElementById("timer-sec");
+      if (timerSec) {
+        const content = timerSec.querySelector(".content-box");
+        content.innerHTML = `
+          <h2 style="font-family:'Playfair Display', serif; font-size: clamp(2rem, 5vw, 4rem); color: var(--color-accent); margin-bottom:10px;">Happy Birthday!</h2>
+          <p style="color:var(--color-text-dim); margin-bottom: 30px; letter-spacing: 2px;">A magical world awaits you today.</p>
+          <a href="birthday.html" class="bday-gate-btn" style="text-decoration:none; display:inline-block; padding: 12px 30px; font-size: 0.9rem;">Open World <i class="fas fa-external-link-alt" style="margin-left:8px;"></i></a>
+        `;
+      }
     }
+
+    function startGlobalCelebration() {
+      const container = document.createElement("div");
+      container.style.position = "fixed";
+      container.style.top = "0";
+      container.style.left = "0";
+      container.style.width = "100%";
+      container.style.height = "100%";
+      container.style.pointerEvents = "none";
+      container.style.zIndex = "999";
+      document.body.appendChild(container);
+
+      const items = ["🌸", "❄️", "✨", "💮", "🌺", "💖", "🌷"];
+      setInterval(() => {
+        const p = document.createElement("div");
+        p.innerText = items[Math.floor(Math.random() * items.length)];
+        p.style.position = "absolute";
+        p.style.left = Math.random() * 100 + "vw";
+        p.style.top = "-5vh";
+        p.style.fontSize = Math.random() * 20 + 10 + "px";
+        p.style.opacity = Math.random() * 0.6 + 0.4;
+        container.appendChild(p);
+
+        gsap.to(p, {
+          y: "110vh",
+          x: (Math.random() - 0.5) * 400 + "px",
+          rotation: Math.random() * 720,
+          duration: Math.random() * 8 + 5,
+          ease: "none",
+          onComplete: () => p.remove()
+        });
+      }, 400);
+    }
+
+
+    // Original Countdown Logic
     function tick() {
       const targetYear = (now.getMonth() + 1 > 4 || (now.getMonth() + 1 === 4 && now.getDate() >= 12))
         ? now.getFullYear() + 1 : now.getFullYear();
       const target = new Date(`April 12, ${targetYear} 00:00:00`).getTime();
       const current = new Date().getTime();
       const diff = target - current;
+
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const secs = Math.floor((diff % (1000 * 60)) / 1000);
-      document.getElementById("d-val").innerText = days.toString().padStart(2, '0');
-      document.getElementById("h-val").innerText = hours.toString().padStart(2, '0');
-      document.getElementById("m-val").innerText = mins.toString().padStart(2, '0');
-      document.getElementById("s-val").innerText = secs.toString().padStart(2, '0');
+
+      const dVal = document.getElementById("d-val");
+      if (dVal) {
+        dVal.innerText = days.toString().padStart(2, '0');
+        document.getElementById("h-val").innerText = hours.toString().padStart(2, '0');
+        document.getElementById("m-val").innerText = mins.toString().padStart(2, '0');
+        document.getElementById("s-val").innerText = secs.toString().padStart(2, '0');
+      }
     }
     setInterval(tick, 1000);
     tick();
   }
+
+
 
   function initParallaxEngine() {
     gsap.to("#pg-1", { xPercent: -20, scrollTrigger: { trigger: "body", scrub: true } });
@@ -462,14 +610,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const tracks = [
       { t: "As It Was", a: "Harry Styles", s: "Assets/music/Harry Styles - As It Was (Official Video).mp3" },
       { t: "Fine Line", a: "Harry Styles", s: "Assets/music/Harry Styles - Fine Line (Official Audio).mp3" },
+      { t: "Lover", a: "Taylor Swift", s: "Assets/music/lover-taylor.mp3" },
       { t: "Flutter of a Butterfly", a: "Anthony Lazaro & Jason LaPierre", s: "Assets/music/Anthony Lazaro & Jason LaPierre - Flutter of a Butterfly.mp3" },
       { t: "Small Rainbows", a: "Anthony Lazaro", s: "Assets/music/Anthony Lazaro - Small Rainbows.mp3" },
       { t: "And Time Froze", a: "Duara", s: "Assets/music/Duara - And Time Froze (Official Visualizer).mp3" },
       { t: "Kita Sama", a: "Daun Jatuh", s: "Assets/music/Daun Jatuh - Kita Sama (Official Audio).mp3" },
-      { t: "Di Antara Rindu", a: "Shanum Naysila", s: "Assets/music/Di Antara Rindu.mp3" },
+      { t: "Di Antara Rindu", a: "Indische Party", s: "Assets/music/Di Antara Rindu.mp3" },
       { t: "Pastikan Riuh Akhiri Malammu", a: "Perunggu", s: "Assets/music/Perunggu - Pastikan Riuh Akhiri Malammu (Official Music Video).mp3" },
-      { t: "Pelukku Untuk Pelikmu", a: "Fiersa Besari", s: "Assets/music/Pelukku-untuk-pelikmu.mp3" },
-      { t: "Ini Abadi", a: "Perunggu", s: "Assets/music/Perunggu  Ini Abadi.mp3" }
+      { t: "Pelukku Untuk Pelikmu", a: "Fiersa Besari", s: "Assets/music/Pelukku-untuk-pelikmu.mp3" }
     ];
     const list = document.getElementById("track-list");
     const toggle = document.getElementById("v-toggle");
@@ -481,6 +629,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const progContainer = document.getElementById("v-prog-container");
     const timeCurrent = document.getElementById("time-current");
     const timeTotal = document.getElementById("time-total");
+
+    if (!list || !toggle || !audio) return;
+
     let active = -1; let playing = false;
 
     // Initialize volume
@@ -634,6 +785,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function initCompactPuzzle() {
     const board = document.getElementById("p-grid");
+    if (!board) return;
     let pieces = []; let empty = 8;
     const words = ["shanum", "naysila", "priyambodo", "shanum", "naysila", "priyambodo", "shanum", "naysila"];
     const correctSequence = ["shanum", "naysila", "priyambodo", "shanum", "naysila", "priyambodo", "shanum", "naysila", ""];
