@@ -512,7 +512,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const count = cards.length;
     if (!ring || cards.length === 0) return;
 
-    const radius = 850;
+    const isMobile = window.innerWidth < 768;
+    const radius = isMobile ? 400 : 850; // Jarak dipersempit di mobile
     const anglePer = 360 / count;
 
     cards.forEach((card, i) => {
@@ -539,7 +540,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const img = card.querySelector("img");
         if (img) {
-          const xOffset = Math.sin(normalizedAngle * (Math.PI / 180)) * 65;
+          const xOffset = Math.sin(normalizedAngle * (Math.PI / 180)) * 40;
           gsap.set(img, { x: xOffset });
         }
       });
@@ -875,6 +876,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const hamburger = document.getElementById("hamburger-btn");
     const navSide = document.getElementById("nav-side");
     const navBtns = document.querySelectorAll(".nav-btn");
+    const dockToggle = document.getElementById("dock-collapse-btn");
+
+    if (dockToggle) {
+      dockToggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        navSide.classList.toggle("collapsed");
+        const icon = dockToggle.querySelector("i");
+        if (navSide.classList.contains("collapsed")) {
+          icon.className = "fas fa-chevron-right";
+        } else {
+          icon.className = "fas fa-chevron-left";
+        }
+      });
+    }
 
     if (!hamburger || !navSide) return;
 

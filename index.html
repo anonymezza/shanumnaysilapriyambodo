@@ -49,13 +49,16 @@
 
   <!-- NAVIGATION SIDEBAR -->
   <nav class="nav-side" id="nav-side">
+    <div class="nav-btn" id="dock-collapse-btn" title="Toggle Dock"><i class="fas fa-chevron-left"></i></div>
+
+    <!-- Vertical Separator -->
+    <div style="width: 1px; height: 16px; background: var(--color-glass-border); margin: 0 8px;"></div>
+
     <!-- Integrated Theme Toggle (Top) -->
     <div class="nav-btn theme-switch-btn" id="theme-toggle" title="Switch Theme">
       <i class="fas fa-moon"></i>
     </div>
-
-    <!-- Separator -->
-    <div style="width: 16px; height: 1px; background: var(--color-glass-border); margin: 8px auto;"></div>
+    <div style="width: 1px; height: 16px; background: var(--color-glass-border); margin: 0 8px;"></div>
 
     <div class="nav-btn active" data-section="hero" title="Home"><i class="fas fa-home"></i></div>
     <div class="nav-btn" data-section="traits-sec" title="Personality"><i class="fas fa-wand-magic-sparkles"></i></div>
@@ -223,13 +226,15 @@
       <section id="music-sec">
         <div class="content-box">
           <div class="studio-box">
-            <div style="position:relative;">
-              <div class="vinyl-core" id="v-spin">
-                <div
-                  style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:90px; height:90px; background:var(--color-accent); border-radius:50%; border:6px solid #000; z-index:2;">
+            <div class="vinyl-wrapper">
+              <div style="position:relative;">
+                <div class="vinyl-core" id="v-spin">
+                  <div
+                    style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:90px; height:90px; background:var(--color-accent); border-radius:50%; border:6px solid #000; z-index:2;">
+                  </div>
                 </div>
+                <div class="vinyl-needle" id="v-needle"></div>
               </div>
-              <div class="vinyl-needle" id="v-needle"></div>
             </div>
             <div style="flex:1;">
               <h2 id="cur-song"
@@ -252,30 +257,24 @@
               </div>
 
               <!-- Music Controls -->
-              <div style="display:flex; align-items:center; gap:20px; margin-top:50px;">
-                <!-- Previous Button -->
-                <button id="v-prev"
-                  style="width:50px; height:50px; border-radius:50%; border:2px solid var(--color-accent); background:transparent; color:var(--color-accent); font-size:1.2rem; cursor:pointer; transition:0.3s;"
-                  title="Previous"><i class="fas fa-step-backward"></i></button>
+              <div class="music-controls-group">
+                <div class="v-nav-btns">
+                  <!-- Previous Button -->
+                  <button id="v-prev" title="Previous"><i class="fas fa-step-backward"></i></button>
 
-                <!-- Play/Pause Button -->
-                <button id="v-toggle"
-                  style="width:75px; height:75px; border-radius:50%; border:none; background:var(--color-accent); color:#000; font-size:1.5rem; cursor:pointer;"><i
-                    class="fas fa-play"></i></button>
+                  <!-- Play/Pause Button -->
+                  <button id="v-toggle"><i class="fas fa-play"></i></button>
 
-                <!-- Next Button -->
-                <button id="v-next"
-                  style="width:50px; height:50px; border-radius:50%; border:2px solid var(--color-accent); background:transparent; color:var(--color-accent); font-size:1.2rem; cursor:pointer; transition:0.3s;"
-                  title="Next"><i class="fas fa-step-forward"></i></button>
+                  <!-- Next Button -->
+                  <button id="v-next" title="Next"><i class="fas fa-step-forward"></i></button>
+                </div>
 
-                <!-- Progress Bar -->
-                <div style="flex:1;">
-                  <div id="v-prog-container"
-                    style="height:6px; background:var(--color-glass-border); border-radius:10px; overflow:hidden; cursor:pointer; margin-bottom:10px;">
-                    <div id="v-prog" style="width:0%; height:100%; background:var(--color-accent);"></div>
+                <!-- Progress Bar Container -->
+                <div class="v-prog-wrapper">
+                  <div id="v-prog-container">
+                    <div id="v-prog"></div>
                   </div>
-                  <div
-                    style="display:flex; justify-content:space-between; font-size:0.85rem; color:var(--color-text-dim);">
+                  <div class="v-time-info">
                     <span id="time-current">0:00</span>
                     <span id="time-total">0:00</span>
                   </div>

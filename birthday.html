@@ -351,12 +351,47 @@
 
         @media (max-width: 768px) {
             #codepen-flowers {
-                transform: scale(0.6) translateY(5vh);
+                transform: scale(0.9) translateY(5vh);
+                margin-left: -15px;
+                /* Slight adjustment to center the cluster visually */
             }
 
             .flower__light {
                 display: none;
                 /* Hide expensive small lights on mobile */
+            }
+
+            /* Centering Quote Section on Mobile and align with Letter View */
+            #quote-section {
+                min-height: 100vh;
+                /* Set to 100vh to match #letter-view */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+            }
+
+            #quote-section .quote-content {
+                padding: 0 20px;
+                max-width: 100%;
+            }
+
+            /* Increase Hero Text Size (Total ~32% larger than base) on Mobile and move it up */
+            #garden-hero {
+                top: 35%;
+                /* Move it higher on the screen */
+            }
+
+            #garden-hero h1 {
+                font-size: clamp(2.38rem, 10.56vw, 7.92rem);
+            }
+
+            #garden-hero .hero-sub {
+                font-size: clamp(0.92rem, 2.64vw, 1.45rem);
+            }
+
+            #garden-hero .hero-date {
+                font-size: clamp(0.79rem, 1.98vw, 1.19rem);
             }
         }
     </style>
@@ -371,6 +406,15 @@
     <!-- MUSIC CONTROL -->
     <div id="music-btn" class="music-control paused">
         <i class="fas fa-play"></i>
+    </div>
+
+    <!-- FLOWER INFO OVERLAY -->
+    <div class="flower-overlay" id="flower-overlay">
+        <div class="overlay-content">
+            <h2 class="overlay-title" id="overlay-title">Flower Meaning</h2>
+            <p class="overlay-desc" id="overlay-desc">Description of the flower goes here.</p>
+            <button class="overlay-close" id="overlay-close">Close</button>
+        </div>
     </div>
 
     <!-- SECTION 1: GARDEN -->
@@ -670,6 +714,49 @@
                     <div class="leaf leaf--3"></div>
                 </div>
             </div>
+
+            <!-- FAR LEFT FOLIAGE -->
+            <div class="long-g" style="left: -55vmin; bottom: 0; transform: scale(0.9) rotate(-15deg); z-index: -1;">
+                <div class="grow-ans" style="--d:3.8s">
+                    <div class="leaf leaf--0"></div>
+                </div>
+                <div class="grow-ans" style="--d:4s">
+                    <div class="leaf leaf--1"></div>
+                </div>
+                <div class="grow-ans" style="--d:4.2s">
+                    <div class="leaf leaf--2"></div>
+                </div>
+            </div>
+            <div class="long-g"
+                style="left: -70vmin; bottom: -5vmin; transform: scale(0.8) rotate(-25deg); z-index: -2;">
+                <div class="grow-ans" style="--d:4s">
+                    <div class="leaf leaf--0" style="--h: 60vmin;"></div>
+                </div>
+                <div class="grow-ans" style="--d:4.2s">
+                    <div class="leaf leaf--1" style="--h: 50vmin;"></div>
+                </div>
+            </div>
+
+            <!-- FAR RIGHT FOLIAGE -->
+            <div class="long-g" style="left: 55vmin; bottom: 0; transform: scale(0.9) rotate(15deg); z-index: -1;">
+                <div class="grow-ans" style="--d:3.9s">
+                    <div class="leaf leaf--0" style="transform: rotateY(180deg);"></div>
+                </div>
+                <div class="grow-ans" style="--d:4.1s">
+                    <div class="leaf leaf--1" style="transform: rotateY(180deg);"></div>
+                </div>
+                <div class="grow-ans" style="--d:4.3s">
+                    <div class="leaf leaf--2" style="transform: rotateY(180deg);"></div>
+                </div>
+            </div>
+            <div class="long-g" style="left: 70vmin; bottom: -5vmin; transform: scale(0.8) rotate(25deg); z-index: -2;">
+                <div class="grow-ans" style="--d:4.1s">
+                    <div class="leaf leaf--0" style="--h: 60vmin; transform: rotateY(180deg);"></div>
+                </div>
+                <div class="grow-ans" style="--d:4.3s">
+                    <div class="leaf leaf--1" style="--h: 50vmin; transform: rotateY(180deg);"></div>
+                </div>
+            </div>
         </div>
 
 
@@ -695,20 +782,24 @@
     <section id="letter-view">
         <div class="letter-card" id="letter-card">
             <h1 class="letter-title">Selamat Ulang Tahun, Shanum</h1>
-            <p class="letter-para">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                velit esse cillum dolore eu fugiat nulla pariatur.</p>
-            <p class="letter-para">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
-                doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-                architecto beatae vitae dicta sunt explicabo.</p>
-            <p class="letter-para">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui
-                dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.</p>
-            <p class="letter-para">Semoga di usia yang baru ini, setiap langkahmu dipenuhi cahaya, senyummu mekar
-                seindah bunga, dan keberanianmu tumbuh setinggi langit. Selamat ulang tahun, Shanum. Dunia jauh lebih
-                indah karena ada kamu.</p>
+            <p class="letter-para">Aku adalah orang yang selalu ada di
+                belakangmu, entah kamu tahu atau tidak. Aku mungkin orang yang belum tahu betul apa hal yang kamu suka,
+                apa yang membuatmu kurang nyaman, apa yang membuatmu ceria dan apa kekhawatiran terbesarmu.</p>
+            <p class="letter-para">Tapi mungkin akulah orang yang paling tahu bagaimana perjuangan dan keluh kesah yang
+                bahkan jarang kamu ceritakan ke orang lain. Bagiku kamu orang yang paling keren, menyenangkan, dan sosok
+                yang diharapkan orang lain atas kehadiranmu.</p>
+            <p class="letter-para">Aku mungkin sedikit tahu kalau sekarang kamu khawatir tentang perjalananmu menuju
+                masa depan. Apakah kamu bisa masuk perguruan tinggi impianmu, apakah kamu bisa membanggakan kedua orang
+                tua mu, apakah kamu bisa memenuhi ekspektasi orang lain. Tenang saja kamu pasti bakal berhasil meraih
+                semua itu.</p>
+            <p class="letter-para">Aku orang yang paling yakin atas hal itu, aku bisa melihat dari semua perjuangan yang
+                kamu lewati selama ini. Dan bahkan jika kamu merasa gagal dan merasa dunia tidak berpihak di sampingmu,
+                kamu bisa memaki ku dan melampiaskan semua emosi dan kekecewaanmu kepadaku.</p>
+            <p class="letter-para">Tenang saja, aku bukan penguntit juga tidak akan menjadi orang obsesif yang menganggu
+                kehidupan damai dan bahagiamu saat ini. Aku tahu kamu memiliki lingkungan yang supportif dan bisa
+                menjadi "rumah" untukmu.</p>
+            <p class="letter-para"><em>"Berbahagialah, Shanum. Dunia ini luas, tetapi kamu tidak akan pernah sendirian
+                    melangkahinya. Nikmati hari ini, karena kamu pantas mendapatkannya."</em></p>
             <div class="letter-btn-wrap">
                 <a href="index.html?finished=true" class="back-world-btn">Return to World</a>
             </div>
@@ -720,124 +811,158 @@
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
+        // ===== FLOWER INTERACTION =====
+        function initFlowerInteraction() {
+            const overlay = document.getElementById('flower-overlay');
+            const title = document.getElementById('overlay-title');
+            const desc = document.getElementById('overlay-desc');
+            const closeBtn = document.getElementById('overlay-close');
+
+            const discoveredFlowers = new Set();
+            let secretShown = false;
+
+            const flowerData = {
+                'flower--1': {
+                    title: 'Pink Gerbera: Gratitude',
+                    desc: 'Melambangkan rasa terima kasih (Gratitude) yang tulus.',
+                    color: '#FF69B4'
+                },
+                'flower--2': {
+                    title: 'Yellow Gerbera: Warmth',
+                    desc: 'Melambangkan kehangatan (Warmth) dan keindahan sejati.',
+                    color: '#FFD700'
+                },
+                'flower--3': {
+                    title: 'Orange Gerbera: Patience',
+                    desc: 'Melambangkan kesabaran (Patience) dan keteguhan.',
+                    color: '#FF8C00'
+                }
+            };
+
+            const hiddenMessage = {
+                title: '3 Gerberas',
+                desc: 'Tiga tangkai Gerbera menyatukan makna ini menjadi: I Love You.',
+                color: '#FF0000' // Red for Love
+            };
+
+            // Tambahkan event listener ke setiap bunga
+            const flowers = [
+                document.querySelector('.flower--1'),
+                document.querySelector('.flower--2'),
+                document.querySelector('.flower--3')
+            ];
+
+            flowers.forEach((flower, index) => {
+                if (flower) {
+                    flower.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Mencegah klik tembus
+
+                        const key = `flower--${index + 1}`;
+
+                        // Mark as discovered
+                        discoveredFlowers.add(key);
+
+                        if (flowerData[key]) {
+                            const data = flowerData[key];
+                            title.innerText = data.title;
+                            desc.innerText = data.desc;
+                            title.style.setProperty('--overlay-color', data.color);
+                            overlay.classList.add('active');
+                        }
+                    });
+                    // Tambahkan cursor pointer agar user tahu bisa diklik
+                    flower.style.cursor = 'pointer';
+                }
+            });
+
+            // Tutup overlay
+            function closeOverlay() {
+                if (overlay.classList.contains('active')) {
+                    overlay.classList.remove('active');
+
+                    // Jika yang barusan ditutup adalah Hidden Message, reset state biar bisa muncul lagi
+                    if (title.innerText === hiddenMessage.title) {
+                        discoveredFlowers.clear();
+                        secretShown = false;
+                    }
+                    // Jika belum muncul secret dan semua bunga sudah ditemukan
+                    else if (discoveredFlowers.size === 3 && !secretShown) {
+                        secretShown = true;
+                        setTimeout(() => {
+                            title.innerText = hiddenMessage.title;
+                            desc.innerText = hiddenMessage.desc;
+                            title.style.setProperty('--overlay-color', hiddenMessage.color);
+                            overlay.classList.add('active');
+                        }, 500);
+                    }
+                }
+            }
+
+            if (closeBtn) closeBtn.addEventListener('click', closeOverlay);
+            if (overlay) overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) closeOverlay();
+            });
+        }
+
         window.onload = () => {
             initMusic();
             createStars();
-            createParticles();
-            initEntrance();
-            initParallaxScroll();
-            initQuoteSection();
+            // createParticles(); // Optional if you want particles
+
+            // Critical calls for setup
+            initEntrance();         // Reveals the text!
+            initParallaxScroll();   // Sets up scroll effects
+            initQuoteSection();     // Sets up quote section
             initLetterSection();
             initMouse();
             initAgeDisplay();
+            initFlowerInteraction();
         };
 
         // ===== MUSIC PLAYER LOGIC =====
         function initMusic() {
-            const music = document.getElementById('bg-music');
             const musicBtn = document.getElementById('music-btn');
-            if (!music || !musicBtn) return;
+            const BGM = document.getElementById('bg-music');
 
-            function updateUI() {
-                if (!musicBtn) return;
-                if (music.paused) {
-                    musicBtn.classList.add('paused');
-                    musicBtn.classList.remove('playing');
-                } else {
-                    musicBtn.classList.add('playing');
-                    musicBtn.classList.remove('paused');
-                }
+            if (musicBtn && BGM) {
+                musicBtn.onclick = () => {
+                    if (BGM.paused) {
+                        BGM.play();
+                        musicBtn.classList.remove('paused');
+                        musicBtn.classList.add('playing');
+                    } else {
+                        BGM.pause();
+                        musicBtn.classList.remove('playing');
+                        musicBtn.classList.add('paused');
+                    }
+                };
             }
-
-            const tryPlay = () => {
-                if (localStorage.getItem('musicPlaying') !== 'false') {
-                    music.play().then(() => {
-                        updateUI();
-                        localStorage.setItem('musicPlaying', 'true');
-                    }).catch(() => {
-                        updateUI();
-                    });
-                }
-            };
-
-            // Force start music on every entrance
-            tryPlay();
-
-            // Interaction Fallback
-            const interactions = ['click', 'touchstart', 'scroll', 'keydown', 'mousemove'];
-            const onFirstInteraction = () => {
-                if (music.paused && localStorage.getItem('musicPlaying') !== 'false') {
-                    tryPlay();
-                }
-                interactions.forEach(ev => document.removeEventListener(ev, onFirstInteraction));
-            };
-            interactions.forEach(ev => document.addEventListener(ev, onFirstInteraction, { once: true }));
-
-            musicBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (music.paused) {
-                    music.play().then(updateUI);
-                    localStorage.setItem('musicPlaying', 'true');
-                } else {
-                    music.pause();
-                    localStorage.setItem('musicPlaying', 'false');
-                    updateUI();
-                }
-            });
-
-            music.onplay = updateUI;
-            music.onpause = updateUI;
         }
 
-        // ===== CREATE STAR FIELD =====
+        // ===== PARALLAX STARS =====
         function createStars() {
-            const layer = document.getElementById('stars-layer');
-            const isMobile = window.innerWidth < 768;
-            const starCount = isMobile ? 50 : 120; // Reduced for mobile performance
+            const container = document.getElementById('stars-layer');
+            const count = 200;
 
-            for (let i = 0; i < starCount; i++) {
+            for (let i = 0; i < count; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
-                const size = Math.random() * (isMobile ? 1.5 : 2.5) + 1;
-                star.style.width = size + 'px';
-                star.style.height = size + 'px';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                layer.appendChild(star);
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const size = Math.random() * 2 + 1;
+                const duration = Math.random() * 3 + 2;
+                const delay = Math.random() * 5;
 
+                star.style.left = `${x}%`;
+                star.style.top = `${y}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+
+                // Twinkle animation
                 gsap.to(star, {
-                    opacity: Math.random() * 0.8 + 0.2,
-                    duration: Math.random() * 2 + 1,
-                    delay: Math.random() * 3,
+                    opacity: 1,
                     repeat: -1,
                     yoyo: true,
-                    ease: 'sine.inOut',
-                    force3D: true // Optimization
-                });
-            }
-        }
-
-        // ===== CREATE FLOATING PARTICLES =====
-        function createParticles() {
-            const layer = document.getElementById('particles-layer');
-            const isMobile = window.innerWidth < 768;
-            const particleCount = isMobile ? 15 : 30; // Reduced for mobile
-            const colors = ['rgba(212,175,55,0.4)', 'rgba(255,215,0,0.3)', 'rgba(255,255,255,0.15)'];
-
-            for (let i = 0; i < particleCount; i++) {
-                const p = document.createElement('div');
-                p.className = 'parallax-particle';
-                const size = Math.random() * 6 + 2;
-                p.style.width = size + 'px';
-                p.style.height = size + 'px';
-                p.style.background = colors[Math.floor(Math.random() * colors.length)];
-                p.style.left = Math.random() * 100 + '%';
-                p.style.top = Math.random() * 100 + '%';
-                layer.appendChild(p);
-
-                gsap.to(p, {
-                    opacity: Math.random() * 0.6 + 0.2,
-                    y: -100 - Math.random() * 200,
                     x: (Math.random() - 0.5) * 150,
                     duration: Math.random() * 10 + 8,
                     delay: Math.random() * 5,

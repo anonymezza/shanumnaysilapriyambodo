@@ -9,7 +9,10 @@
 
 .flowers {
     position: relative;
-    transform: scale(0.9);
+    transform: scale(0.85);
+    /* Slightly smaller than original 0.9 */
+    top: 5vh;
+    /* Added top spacing */
     z-index: 10;
 }
 
@@ -147,11 +150,125 @@
     width: 8vmin;
     height: 11vmin;
     border-radius: 51% 49% 47% 53%/44% 45% 55% 69%;
-    background-color: #FFD700;
-    background-image: linear-gradient(to top, #D4AF37, #FFD700);
+    background-color: var(--petal-color-1, #FFD700);
+    background-image: linear-gradient(to top, var(--petal-color-2, #D4AF37), var(--petal-color-1, #FFD700));
     transform-origin: bottom center;
     opacity: 0.9;
     box-shadow: inset 0 0 2vmin rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: filter 0.3s ease;
+}
+
+.flower__leaf:hover {
+    filter: brightness(1.2);
+}
+
+/* FLOWER COLORS (GERBERA THEME) */
+
+/* Flower 1: Pink (Gratitude) */
+.flower--1 {
+    --petal-color-1: #FF69B4;
+    /* Hot Pink */
+    --petal-color-2: #C71585;
+    /* Medium Violet Red */
+}
+
+.flower--1 .flower__leafs::after {
+    background-color: #C71585;
+}
+
+/* Flower 2: Yellow (Warmth/Ultimate) */
+.flower--2 {
+    --petal-color-1: #FFD700;
+    /* Gold */
+    --petal-color-2: #FFA500;
+    /* Orange */
+}
+
+.flower--2 .flower__leafs::after {
+    background-color: #FFA500;
+}
+
+
+/* Flower 3: Orange (Patience) */
+.flower--3 {
+    --petal-color-1: #FF8C00;
+    /* Dark Orange */
+    --petal-color-2: #FF4500;
+    /* Orange Red */
+}
+
+.flower--3 .flower__leafs::after {
+    background-color: #FF4500;
+}
+
+/* OVERLAY STYLES */
+.flower-overlay {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 40px 20px 60px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.6) 80%, transparent);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 1000;
+    transform: translateY(100%);
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    pointer-events: none;
+    /* Let clicks pass through when hidden */
+}
+
+.flower-overlay.active {
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.overlay-content {
+    max-width: 600px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease 0.2s;
+}
+
+.flower-overlay.active .overlay-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.overlay-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--overlay-color, #fff);
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.overlay-desc {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.overlay-close {
+    margin-top: 15px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: color 0.3s;
+}
+
+.overlay-close:hover {
+    color: #fff;
 }
 
 .flower__leaf--1 {
