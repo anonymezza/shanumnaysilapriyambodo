@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://anonymezza.github.io/shanumnaysilapriyambodo/sitemap.xml
+Sitemap: https://shanumnaysilapriyambodo.netlify.app/sitemap.xml
