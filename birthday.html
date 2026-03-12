@@ -784,8 +784,8 @@
     <section id="quote-section">
         <div class="quote-content">
             <div class="quote-divider"></div>
-            <p class="quote-line">&ldquo;Setiap bunga mekar di waktunya sendiri, dan kamu telah mekar menjadi manusia
-                yang luar biasa indah.&rdquo;</p>
+            <p class="quote-line">&ldquo;Setiap bunga mekar di waktunya sendiri, dan kamu telah mekar dengan versimu
+                yang indah.&rdquo;</p>
             <p class="quote-author">&mdash; Untukmu, Shanum</p>
             <div class="quote-divider"></div>
         </div>
@@ -799,7 +799,8 @@
                 belakangmu, entah kamu tahu atau tidak. Aku mungkin orang yang belum tahu betul apa hal yang kamu suka,
                 apa yang membuatmu kurang nyaman, apa yang membuatmu ceria dan apa kekhawatiran terbesarmu.</p>
             <p class="letter-para">Tapi mungkin akulah orang yang paling tahu bagaimana perjuangan dan keluh kesah yang
-                bahkan jarang kamu ceritakan ke orang lain. Bagiku kamu orang yang paling keren, menyenangkan, dan sosok
+                bahkan jarang kamu ceritakan ke orang lain. <br> Bagiku kamu orang yang paling keren, menyenangkan, dan
+                sosok
                 yang diharapkan orang lain atas kehadiranmu.</p>
             <p class="letter-para">Aku mungkin sedikit tahu kalau sekarang kamu khawatir tentang perjalananmu menuju
                 masa depan. Apakah kamu bisa masuk perguruan tinggi impianmu, apakah kamu bisa membanggakan kedua orang
@@ -821,8 +822,12 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
     <script>
         gsap.registerPlugin(ScrollTrigger);
+
+        // NATIVE SCROLL RESTORED FOR STABILITY
+        ScrollTrigger.config({ limitCallbacks: true });
 
         // ===== FLOWER INTERACTION =====
         function initFlowerInteraction() {
@@ -927,9 +932,11 @@
             initParallaxScroll();   // Sets up scroll effects
             initQuoteSection();     // Sets up quote section
             initLetterSection();
-            initMouse();
             initAgeDisplay();
             initFlowerInteraction();
+
+            // Ensure ScrollTrigger measurements are correct
+            ScrollTrigger.refresh();
         };
 
         // ===== MUSIC PLAYER LOGIC =====
@@ -938,6 +945,28 @@
             const BGM = document.getElementById('bg-music');
 
             if (musicBtn && BGM) {
+                const playMusic = () => {
+                    BGM.play().then(() => {
+                        musicBtn.classList.remove('paused');
+                        musicBtn.classList.add('playing');
+                    }).catch(err => {
+                        console.log("Autoplay blocked, waiting for interaction.");
+                    });
+                };
+
+                // Attempt play immediately
+                playMusic();
+
+                // Interaction Fallback
+                const interactions = ['click', 'touchstart', 'scroll', 'keydown'];
+                const onFirstInteraction = () => {
+                    if (BGM.paused) {
+                        playMusic();
+                    }
+                    interactions.forEach(ev => document.removeEventListener(ev, onFirstInteraction));
+                };
+                interactions.forEach(ev => document.addEventListener(ev, onFirstInteraction, { once: true }));
+
                 musicBtn.onclick = () => {
                     if (BGM.paused) {
                         BGM.play();
@@ -1026,24 +1055,16 @@
 
         // ===== PARALLAX SCROLL EFFECTS =====
         function initParallaxScroll() {
-            // Garden section: flower zooms in + blurs as you scroll
+            // Garden section: flower zooms in (No blur for performance)
             gsap.to('#codepen-flowers', {
                 scrollTrigger: {
                     trigger: '#garden-view',
                     start: 'top top',
                     end: 'bottom top',
-                    scrub: 1.5,
-                    onUpdate: (self) => {
-                        // Optimization: Disable expensive blur on mobile during scroll if heavy
-                        if (window.innerWidth < 768 && self.progress > 0.1) {
-                            gsap.set('#codepen-flowers', { filter: 'none' });
-                        }
-                    }
+                    scrub: true // More direct response
                 },
                 scale: 1.4,
                 y: -80,
-                // Only blur if not on mobile, or very subtley
-                filter: window.innerWidth < 768 ? 'blur(0px)' : 'blur(3px)',
                 ease: 'none',
                 force3D: true
             });
@@ -1098,13 +1119,15 @@
                 ease: 'none'
             });
 
-            // Scroll hint fades out
+            // Scroll hint fades out - Modified to reappear on scroll up
             gsap.to('.scroll-hint', {
                 scrollTrigger: {
                     trigger: '#garden-view',
-                    start: '5% top',
-                    end: '15% top',
-                    scrub: 1
+                    start: '10% top',   // Start fading later
+                    end: '30% top',     // End fading further down
+                    scrub: true,        // Sync with scroll
+                    onEnter: () => gsap.to('.scroll-hint', { opacity: 0.8 }),
+                    onLeaveBack: () => gsap.to('.scroll-hint', { opacity: 0.8 })
                 },
                 opacity: 0,
                 ease: 'none'
@@ -1177,48 +1200,7 @@
             });
         }
 
-        // ===== MOUSE INTERACTION =====
-        function initMouse() {
-            let lastMove = 0;
-            const throttle = 16; // ~60fps
 
-            window.addEventListener('mousemove', e => {
-                const now = Date.now();
-                if (now - lastMove < throttle) return;
-                lastMove = now;
-
-                const mx = (e.clientX / window.innerWidth) - 0.5;
-                const my = (e.clientY / window.innerHeight) - 0.5;
-
-                gsap.to('#codepen-flowers', {
-                    x: mx * 40,
-                    y: my * 15,
-                    rotateY: mx * 12,
-                    rotateX: my * -5,
-                    duration: 2,
-                    ease: 'power2.out',
-                    force3D: true
-                });
-
-                // Subtle parallax on stars
-                gsap.to('#stars-layer', {
-                    x: mx * -15,
-                    y: my * -10,
-                    duration: 3,
-                    ease: 'power2.out',
-                    force3D: true
-                });
-
-                // Particles react
-                gsap.to('#particles-layer', {
-                    x: mx * 25,
-                    y: my * 20,
-                    duration: 2.5,
-                    ease: 'power2.out',
-                    force3D: true
-                });
-            });
-        }
 
         function initAgeDisplay() {
             const birthDate = "2007-04-12";

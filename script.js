@@ -338,33 +338,75 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function initLenisSystem() {
-    const lenis = new Lenis({
-      duration: 1.4,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      touchMultiplier: 2
-    });
-    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+    // Check if device is likely low-end or if user prefers reduced motion
+    const isLowEnd = navigator.hardwareConcurrency < 4;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    document.querySelectorAll(".nav-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const targetId = btn.dataset.section;
-        const target = document.getElementById(targetId);
-        if (target) lenis.scrollTo(target);
+    let lenis = null;
+    if (!prefersReducedMotion) {
+      lenis = new Lenis({
+        duration: isLowEnd ? 1 : 1.4,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        touchMultiplier: 1.5,
+        infinite: false,
+        smoothWheel: true,
+        smoothTouch: !isLowEnd // Only enable on touch if not low-end
       });
-    });
 
-    lenis.on('scroll', () => {
-      document.querySelectorAll("section").forEach(sec => {
-        const rect = sec.getBoundingClientRect();
-        if (rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2) {
-          document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
-          document.querySelector(`.nav-btn[data-section="${sec.id}"]`)?.classList.add("active");
+      window.lenis = lenis; // Expose globally if needed
+
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+      gsap.ticker.lagSmoothing(0);
+    }
+
+    document.querySelectorAll(".nav-btn, .bday-gate-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        let targetId = btn.dataset.section || btn.getAttribute('href');
+        if (targetId) {
+          // If it's a cross-page link (like gallery.html), let it through
+          if (targetId.includes('.html') && !targetId.startsWith('#')) return;
+
+          // Normalize ID (remove .html or #)
+          targetId = targetId.replace('.html', '').replace('#', '');
+          const target = document.getElementById(targetId);
+
+          if (target) {
+            e.preventDefault();
+            if (lenis) {
+              lenis.scrollTo(target);
+            } else {
+              target.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // Mobile menu auto-close
+            const navSide = document.getElementById("nav-side");
+            const hamburger = document.getElementById("hamburger-btn");
+            // Check visibility of hamburger as a proxy for mobile mode
+            if (hamburger && getComputedStyle(hamburger).display !== 'none' && navSide && navSide.classList.contains("active")) {
+              navSide.classList.remove("active");
+              const icon = hamburger.querySelector("i");
+              if (icon) {
+                icon.className = "fas fa-bars";
+                gsap.to(icon, { rotation: 0, duration: 0.3 });
+              }
+            }
+          }
         }
       });
     });
+
+    if (lenis) {
+      lenis.on('scroll', () => {
+        document.querySelectorAll("section").forEach(sec => {
+          const rect = sec.getBoundingClientRect();
+          if (rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2) {
+            document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+            document.querySelector(`.nav-btn[data-section="${sec.id}"]`)?.classList.add("active");
+          }
+        });
+      });
+    }
   }
 
   function initThemeControl() {
@@ -485,9 +527,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Smooth parallax for story section image
     gsap.fromTo("#story-sec .hero-visual-wrap img",
-      { y: "-20vh" },
+      { y: "-15vh", scale: 1.15 },
       {
-        y: "20vh",
+        y: "15vh",
+        scale: 1.15,
         scrollTrigger: {
           trigger: "#story-sec",
           start: "top bottom",
@@ -498,12 +541,46 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     );
 
+    // Parallax for timeline images (Journey) - Enhanced for Mobile
+    gsap.utils.toArray(".tl-img-wrap img").forEach(img => {
+      gsap.fromTo(img,
+        { y: "-10%", scale: 1.2 },
+        {
+          y: "10%",
+          scale: 1.2,
+          scrollTrigger: {
+            trigger: img.parentElement,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+            invalidateOnRefresh: true
+          },
+          ease: "none"
+        }
+      );
+    });
+
+    // Refresh ScrollTrigger to ensure mobile measurements are correct
+    ScrollTrigger.refresh();
+
     // Fade in sections with blur effect
     document.querySelectorAll("section").forEach(sec => {
       gsap.from(sec, {
         opacity: 0, y: 80, filter: "blur(10px)",
         scrollTrigger: { trigger: sec, start: "top 85%", toggleActions: "play none none reverse" }
       });
+    });
+
+    // Modern Scroll Indicator behavior
+    gsap.to(".modern-scroll-wrap", {
+      opacity: 0,
+      y: 40,
+      scrollTrigger: {
+        trigger: "#hero",
+        start: "20% top",
+        end: "50% top",
+        scrub: true
+      }
     });
   }
   function init3DInteraction() {
@@ -869,7 +946,23 @@ document.addEventListener("DOMContentLoaded", () => {
         move(Math.floor(Math.random() * 9), true);
       }
     };
-    document.getElementById("p-sv").onclick = () => build();
+
+    // CUSTOM MODAL LOGIC
+    const modal = document.getElementById("puzzle-modal");
+    const closeBtn = document.getElementById("close-puzzle-modal");
+    const okBtn = document.getElementById("ok-puzzle-modal");
+    const overlay = modal ? modal.querySelector(".modal-overlay") : null;
+
+    if (modal && closeBtn && okBtn && overlay) {
+      const showModal = () => modal.classList.add("active");
+      const hideModal = () => modal.classList.remove("active");
+
+      document.getElementById("p-sv").onclick = showModal;
+      closeBtn.onclick = hideModal;
+      okBtn.onclick = hideModal;
+      overlay.onclick = hideModal;
+    }
+
     build();
   }
   function initMobileMenu() {
@@ -909,24 +1002,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Close when clicking a link
-    navBtns.forEach(btn => {
-      btn.addEventListener("click", () => {
-        navSide.classList.remove("active");
-        const icon = hamburger.querySelector("i");
-        icon.className = "fas fa-bars";
-        gsap.to(icon, { rotation: 0, duration: 0.3 });
-      });
-    });
-
-    // Close when clicking outside
-    document.addEventListener("click", (e) => {
-      if (!navSide.contains(e.target) && !hamburger.contains(e.target) && navSide.classList.contains("active")) {
-        navSide.classList.remove("active");
-        const icon = hamburger.querySelector("i");
-        icon.className = "fas fa-bars";
-        gsap.to(icon, { rotation: 0, duration: 0.3 });
-      }
-    });
+    // Navigation logic is now handled in initLenisSystem to ensure smooth scrolling
   }
 });

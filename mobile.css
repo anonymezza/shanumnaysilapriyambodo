@@ -81,21 +81,40 @@
         margin-right: 0;
         margin-bottom: 60px;
         max-width: 100%;
+        padding-left: 45px;
+        /* Room for the line at 20px */
+        text-align: left !important;
+        align-items: flex-start !important;
+    }
+
+    .tl-content {
+        width: 100%;
+        text-align: left !important;
     }
 
     .timeline-item::before {
-        display: none;
-        /* Hide dots to save space on mobile */
+        left: 20px !important;
+        transform: translateX(-50%) !important;
+        display: block !important;
+        /* Show the dot on the line */
     }
 }
 
 @media (max-width: 600px) {
     .hero-title-giant {
-        font-size: clamp(1.5rem, 12vw, 4rem);
-        line-height: 1.1;
-        margin-bottom: 20px;
+        font-size: clamp(3.84rem, 21.6vw, 8.4rem);
+        line-height: 0.95;
+        margin-bottom: 25px;
         word-wrap: break-word;
         overflow-wrap: break-word;
+        letter-spacing: -2px;
+    }
+
+    .section-title-lux {
+        font-size: clamp(3.5rem, 16vw, 5.5rem) !important;
+        line-height: 0.95;
+        margin-bottom: 15px;
+        letter-spacing: -1px;
     }
 
     .hero-sub-text {
@@ -309,7 +328,7 @@
 
 @media (max-width: 400px) {
     .hero-title-giant {
-        font-size: 11vw;
+        font-size: 13.2vw;
     }
 
     /* Redundant vinyl styles removed */
@@ -454,4 +473,13 @@ img {
     max-width: 100%;
     height: auto;
     display: block;
+}
+
+@media (max-width: 900px) {
+    /* ... other mobile styles ... */
+
+    /* Hide desktop dock collapse button on mobile */
+    #dock-collapse-btn {
+        display: none !important;
+    }
 }
